@@ -1,0 +1,26 @@
+name: test
+
+on : push
+
+jobs:
+  bulid:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+            python-version: '3.10'
+
+			- name: Cache python packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip && pip install pipenv
+          pipenv install --dev --ignore-pipfile
+          pipenv --venv
+          
