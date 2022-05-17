@@ -14,11 +14,8 @@ ENV PYTHONUNBUFFERED=0
 
 ENV PYTHONIOENCODING=utf-8
 
-RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade setuptools
-
 ### 실행 환경 구축 ###
-RUN pip3 install pipenv && pipenv install --dev --system --deploy
+RUN pip install --upgrade pip && pip install pipenv && pipenv install --system --dev --ignore-pipfile
 
 # RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
