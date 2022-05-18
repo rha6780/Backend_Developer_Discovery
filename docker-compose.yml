@@ -25,9 +25,11 @@ services:
       volumes:
           - ./studyrun:/studyrun
   db:
-    image: postgres
+    image: postgres:10.19-apline
     restart: always
     environment:
       - POSTGRES_DB=testDB
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
