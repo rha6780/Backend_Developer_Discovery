@@ -1,0 +1,6 @@
+SECRET_KEY='f^a5yvmvtx^x3g3n%1+i#=age-6(d*ercjn7q+xa=$qms=7@eh'
+POSTGRES_DB=test_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
