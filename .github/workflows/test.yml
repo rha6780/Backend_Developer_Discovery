@@ -3,6 +3,18 @@ name: test
 on : push
 
 jobs:
+  linter:
+    name: linter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: rickstaa/action-black@v1
+        with:
+          black_args: ". --check --line-length 88"
+      - uses: isort/isort-action@master
+        with:
+          configuration: "--profile black --check-only --diff --line-length 88"
+  
   bulid:
     runs-on: ubuntu-latest
 
