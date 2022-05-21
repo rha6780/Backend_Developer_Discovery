@@ -4,5 +4,5 @@ from django.shortcuts import render
 
 # Create your views here.
 class MainView(views.View):
-    def main(request):
-        render(request, "templates/main.html")
+    def get(self, request):
+        return render(request, "main/index.html")
