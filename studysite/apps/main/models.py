@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import CharField
+
 
 # Create your models here.
 class Score(models):
@@ -7,5 +7,4 @@ class Score(models):
     score = models.PositiveIntegerField(default=0)
 
     class Meta:
-        db_table ="Score"
-        
+        db_table = "Score"
