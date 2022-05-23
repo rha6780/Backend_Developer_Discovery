@@ -19,4 +19,4 @@ jobs:
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
       - name: GIT Checkout Branch
-        uses: actions/checkout@main
+        users: actions/checkout@main
