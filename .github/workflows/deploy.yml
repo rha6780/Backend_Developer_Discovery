@@ -20,10 +20,3 @@ jobs:
 
       - name: GIT Checkout Branch
         uses: actions/checkout@main
-
-      - name: Code Deploy
-        run: aws deploy create-deployment 
-        --application-name EC2-S3-Deploy 
-        --deployment-config-name CodeDeployDefault.OneAtATime 
-        --deployment-group-name dev 
-        --s3-location bucket=codesquad-deploy,bundleType=zip,key=server/build.zip
