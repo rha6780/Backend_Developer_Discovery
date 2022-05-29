@@ -19,7 +19,5 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           script: |
-            cd server
-            git reset --hard
-            git fetch
+            cd study_dir
             git pull
