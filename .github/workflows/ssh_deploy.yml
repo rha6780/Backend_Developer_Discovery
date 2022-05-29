@@ -20,5 +20,7 @@ jobs:
           username: ${{ secrets.USER }}
           port: 22
           script: |
+            whoami
+            ls
             cd study_dir/study-run-page
             git pull
