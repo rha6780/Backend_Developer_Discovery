@@ -18,7 +18,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          passphrase: RSA
           script: |
             cd study_dir/study-run-page
             git pull
