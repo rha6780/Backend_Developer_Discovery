@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          port: 22
           script: |
             cd study_dir/study-run-page
             git pull
