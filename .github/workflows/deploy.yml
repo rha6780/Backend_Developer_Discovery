@@ -23,5 +23,5 @@ jobs:
           aws deploy create-deployment \
             --application-name study-run \
             --deployment-group-name EC2-study-group \
-            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
             --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
