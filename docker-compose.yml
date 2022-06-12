@@ -1,29 +1,29 @@
 version: '3.1'
 
 services:
-  nginx:
-      image: nginx:1.17.10
-      container_name: nginx_SR01
-      ports:
-          - "80:80"
-      volumes:
-          - ./studyrun:/studyrun
-          - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-      depends_on:
-          - web
+#   nginx:
+#       image: nginx:1.17.10
+#       container_name: nginx_SR01
+#       ports:
+#           - "80:80"
+#       volumes:
+#           - ./studyrun:/studyrun
+#           - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+#       depends_on:
+#           - web
 
-  web:
-      build: .
-      container_name: SR01
-      command: bash -c "
-          python3 manage.py collectstatic --no-input &&
-          python3 manage.py makemigrations &&
-          python3 manage.py migrate &&
-          gunicorn project.wsgi:application -b 0:80"
-      depends_on:
-          - db
-      volumes:
-          - ./studyrun:/studyrun
+#   web:
+#       build: .
+#       container_name: SR01
+#       command: bash -c "
+#           python3 manage.py collectstatic --no-input &&
+#           python3 manage.py makemigrations &&
+#           python3 manage.py migrate &&
+#           gunicorn project.wsgi:application -b 0:80"
+#       depends_on:
+#           - db
+#       volumes:
+#           - ./studyrun:/studyrun
 
   db:
     image: postgres:13-alpine
@@ -32,4 +32,4 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - "5432:5432"
+      - "6442:5432"
