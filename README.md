@@ -1,3 +1,15 @@
-# study-run-page
-- AWS EC2에 올릴 깃 레포로 간단한 웹 페이지를 구축을 합니다.
-- 현재 구상 중인 웹페이지는 Django, css 및 js 기초를 학습하기 위해 간단한 텍스트 형식 스토리 게임 형식으로 구상 중입니다.
+# Backend Developer Discovery
+- [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 구성합니다.
+- Frontend는 AWS Amplify 로 배포하고 API의 경우 EC2 또는 Lambda를 이용할 예정입니다.
+- 초반에 구성한 페이지도 있습니다.
+
+
+<br>
+## 환경 구성
+- Python 3.10
+- 다음 명령어를 순차적으로 실행하여 환경 구성을 합니다.
+- `pipenv install`
+- `pipenv shell` 로 가상환경에 들어갑니다.
+- .envs 폴더를 생성하고 폴더 안에 .dev, .prod, .test 파일을 생성합니다. 
+- 해당 파일들에 아래 코드를 작성합니다.
+  
