@@ -13,4 +13,12 @@
 - `pipenv shell` 로 가상환경에 들어갑니다.
 - .envs 폴더를 생성하고 폴더 안에 .dev, .prod, .test 파일을 생성합니다. 
 - 해당 파일들에 아래 코드를 작성합니다.
+```
+SECRET_KEY='시크릿 키'
+POSTGRES_DB=test_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+```
   
