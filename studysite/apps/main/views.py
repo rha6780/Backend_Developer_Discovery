@@ -1,4 +1,4 @@
-from rest_framework.views import ListAPIView
+from rest_framework import ListAPIView
 
 from django import views
 from django.shortcuts import render
