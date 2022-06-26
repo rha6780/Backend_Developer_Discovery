@@ -1,4 +1,4 @@
-from rest_framework import ListAPIView
+from rest_framework.views import APIView
 
 from django import views
 from django.shortcuts import render
@@ -13,6 +13,6 @@ class MainView(views.View):
         return render(request, "main/index.html")
 
 
-class QuestionList(ListAPIView):
+class QuestionViewSet(APIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
