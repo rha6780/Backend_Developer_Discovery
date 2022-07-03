@@ -11,8 +11,8 @@ class Score(models.Model):
 
 
 class Question(models.Model):
-    category = models.CharField(max_length=50)
-    content = models.CharField(max_length=1_000)
+    category = models.CharField(max_length=50, default="")
+    content = models.CharField(max_length=1_000, default="")
     answer_count = models.IntegerField(default=2)
 
     class Meta:
@@ -21,8 +21,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    content = models.CharField(max_length=1_000)
+    content = models.CharField(max_length=1_000, default="")
 
-
-class Meta:
-    db_table = "answers"
+    class Meta:
+        db_table = "answers"
