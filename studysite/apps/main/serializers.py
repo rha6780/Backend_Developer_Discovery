@@ -1,9 +1,16 @@
 from rest_framework import serializers
 
+from .models import Answer
 from .models import Question
 
 
-class QuestionSerializer(serializers.Serializer):
-    category = serializers.CharField(max_length=50)
-    content = serializers.CharField(max_length=1_000)
-    Answer_count = serializers.IntegerField(default=2)
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ("id", "content")
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ("id", "category", "content", "Answer_count")

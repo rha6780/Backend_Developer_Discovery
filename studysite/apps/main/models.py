@@ -13,7 +13,7 @@ class Score(models.Model):
 class Question(models.Model):
     category = models.CharField(max_length=50)
     content = models.CharField(max_length=1_000)
-    Answer_count = models.IntegerField(default=2)
+    answer_count = models.IntegerField(default=2)
 
     class Meta:
         db_table = "questions"
