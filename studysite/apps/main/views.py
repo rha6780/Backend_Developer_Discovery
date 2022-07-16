@@ -16,18 +16,22 @@ class MainView(views.View):
 
 
 class QuestionListView(APIView):
+    model = Question
     serializer_class = QuestionSerializer
 
     def get(self, request):
-        queryset = Question.objects.all()
-        serializer = self.serializer_class(queryset)
+        queryset = self.model.objects.all()
+        print(queryset)
+        serializer = self.serializer_class(queryset, many=True)
+        print(serializer.data)
         return Response(serializer.data)
 
 
 class AnswerListView(APIView):
+    model = Answer
     serializer_class = AnswerSerializer
 
     def get(self, request):
-        queryset = Answer.objects.all()
-        serializer = self.serializer_class(queryset)
+        queryset = self.model.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
