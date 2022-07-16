@@ -15,6 +15,9 @@ class Question(models.Model):
     content = models.CharField(max_length=1_000, default="")
     answer_count = models.IntegerField(default=2)
 
+    def __str__(self) -> str:
+        return "[" + str(self.id) + "] : " + self.content
+
     class Meta:
         db_table = "questions"
 
@@ -22,6 +25,9 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     content = models.CharField(max_length=1_000, default="")
+
+    def __str__(self) -> str:
+        return "[" + str(self.id) + "] : " + self.content
 
     class Meta:
         db_table = "answers"
