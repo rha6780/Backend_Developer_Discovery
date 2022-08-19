@@ -35,3 +35,8 @@ class AnswerListView(APIView):
         queryset = self.model.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+    def question_answer(self, request, id):
+        queryset = queryset = self.model.objects.filter(question_id=id)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
