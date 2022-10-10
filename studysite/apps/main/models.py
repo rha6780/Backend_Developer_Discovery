@@ -1,8 +1,12 @@
 from django.db import models
 
+CATEGORY_LIST = [
+    ('basic', '기본')
+]
 
 # Create your models here.
 class Score(models.Model):
+    category = models.CharField(max_length=50, default="", choices=CATEGORY_LIST)
     name = models.CharField(max_length=200, default="user_name")
     score = models.PositiveIntegerField(default=0)
 
@@ -11,7 +15,7 @@ class Score(models.Model):
 
 
 class Question(models.Model):
-    category = models.CharField(max_length=50, default="")
+    category = models.CharField(max_length=50, default="", choices=CATEGORY_LIST)
     image = models.ImageField(upload_to="image", null=True, width_field=400, height_field=400)
     content = models.CharField(max_length=1_000, default="")
     answer_count = models.IntegerField(default=2)
