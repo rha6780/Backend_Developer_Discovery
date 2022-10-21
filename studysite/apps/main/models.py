@@ -16,7 +16,7 @@ class Score(models.Model):
 
 class Question(models.Model):
     category = models.CharField(max_length=50, default="", choices=CATEGORY_LIST)
-    image = models.ImageField(upload_to="image", null=True, width_field=400, height_field=400)
+    image = models.ImageField(upload_to="image/%Y/%m/%d", null=True)
     content = models.CharField(max_length=1_000, default="")
     answer_count = models.IntegerField(default=2)
 
