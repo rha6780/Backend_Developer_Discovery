@@ -10,12 +10,6 @@ from .serializers import AnswerSerializer
 from .serializers import ScoreSerializer
 from .serializers import QuestionSerializer
 
-
-class MainView(views.View):
-    def get(self, request):
-        return render(request, "main/index.html")
-
-
 class QuestionListView(APIView):
     model = Question
     serializer_class = QuestionSerializer
