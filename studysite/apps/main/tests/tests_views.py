@@ -10,7 +10,7 @@ class QuestionListViewTestCase(TestCase):
         cls.LIST_SIZE = 10
         QuestionFactory.create_batch(cls.LIST_SIZE)
 
-    def tset_single_item_response(self):
+    def tset_single_question_item_response(self):
         question = QuestionFactory.create
         response = self.client.get(reverse("question_item", kwargs={'id': 1}))
         print(reverse("question", kwargs={'id': question.id}))

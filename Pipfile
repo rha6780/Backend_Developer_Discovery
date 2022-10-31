@@ -22,4 +22,4 @@ factory-boy = "==3.2.1"
 python_version = "3.10"
 
 [scripts]
-test = "python manage.py test --parallel 4 --settings=studysite.settings.test"
+test = "python studysite/manage.py test --parallel 4 --settings=studysite.settings.test"
