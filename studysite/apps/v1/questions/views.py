@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Question
+from ...db.questions.models import Question
 from .serializers import QuestionCategoryListSerializer
 from .serializers import QuestionItemSerializer
 

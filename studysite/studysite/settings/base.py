@@ -49,7 +49,13 @@ APPLICATIONS = [
     "apps.v1",
 ]
 
-INSTALLED_APPS = THIRD_PARTY + APPLICATIONS + DJANGO_APPS
+MODELS = [
+    "apps.db.answers",
+    "apps.db.questions",
+    "apps.db.scores",
+]
+
+INSTALLED_APPS = THIRD_PARTY + MODELS + APPLICATIONS + DJANGO_APPS
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",

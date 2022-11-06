@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Answer
+from ...db.answers.models import Answer
 from .serializers import AnswerSerializer
 
 
