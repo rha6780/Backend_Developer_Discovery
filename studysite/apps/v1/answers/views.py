@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Answer
-from ..serializers import AnswerSerializer
+from .models import Answer
+from .serializers import AnswerSerializer
 
 
 class AnswerListView(APIView):

@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Score
-from ..serializers import ScoreSerializer
+from .models import Score
+from .serializers import ScoreSerializer
 
 class ScoreView(APIView):
     model = Score
