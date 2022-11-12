@@ -1,8 +1,7 @@
 from django.db import models
 
-CATEGORY_LIST = [
-    ('basic', '기본')
-]
+CATEGORY_LIST = [("basic", "기본"), ("language", "언어영역")]
+
 
 class Question(models.Model):
     category = models.CharField(max_length=50, default="", choices=CATEGORY_LIST)

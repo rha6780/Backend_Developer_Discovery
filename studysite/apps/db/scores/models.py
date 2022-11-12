@@ -1,8 +1,5 @@
 from django.db import models
-
-CATEGORY_LIST = [
-    ('basic', '기본')
-]
+from ..questions.models import CATEGORY_LIST
 
 # Create your models here.
 class Score(models.Model):
