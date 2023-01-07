@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 
 from ...db.answers.models import Answer
 from .serializers import AnswerSerializer
+from .serializers import AnswerCategoryListSerializer
 
 
 class AnswerListView(APIView):
@@ -11,5 +12,15 @@ class AnswerListView(APIView):
 
     def get(self, request, id):
         queryset = queryset = self.model.objects.filter(question_id=id)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+class AnswerCategoryListView(APIView):
+    model = Answer
+    serializer_class = AnswerCategoryListSerializer
+
+    def get(self, request, category):
+        queryset = self.model.objects.filter(category=category)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
