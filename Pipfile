@@ -9,6 +9,7 @@ Django = "==4.0.4"
 psycopg2 = "==2.9.3"
 djangorestframework = "==3.13.1"
 django-cors-headers = "==3.13.0"
+django-rest-auth = "==0.9.5"
 pillow = "==9.2.0"
 
 [dev-packages]

@@ -49,7 +49,9 @@ APPLICATIONS = [
     "apps.api",
 ]
 
-MODELS = []
+MODELS = [
+    "apps.model.users",
+]
 
 INSTALLED_APPS = THIRD_PARTY + MODELS + APPLICATIONS + DJANGO_APPS
 
