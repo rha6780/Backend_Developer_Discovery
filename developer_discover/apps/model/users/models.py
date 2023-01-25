@@ -1,9 +1,9 @@
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractUser, PermissionsMixin):
     """깃 허브 연동 유저 모델입니다.
     Notes:
         깃허브 연동을 통해 유저 정보를 저장하는 테이블입니다. 유저 아이디, 토큰 등 소셜 로그인을 통한 정보 및
@@ -46,7 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         null=True,
     )
 
-    class Meta(AbstractBaseUser.Meta):
+    class Meta(AbstractUser.Meta):
         db_table = "users"
         verbose_name = "user"
         verbose_name_plural = "users"

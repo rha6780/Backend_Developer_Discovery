@@ -11,6 +11,9 @@ djangorestframework = "==3.13.1"
 django-cors-headers = "==3.13.0"
 django-rest-auth = "==0.9.5"
 pillow = "==9.2.0"
+djangorestframework--simplejwt = "*"
+django-allauth = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 black = "==22.1.0"
