@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ["*"]
 # jwt authentication
 # https://krakensystems.co/blog/2020/custom-users-using-django-rest-framework
 REST_USE_JWT = True
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 # authentication model
 AUTH_USER_MODEL = "users.User"

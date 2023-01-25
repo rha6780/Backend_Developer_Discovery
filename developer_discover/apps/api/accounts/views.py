@@ -1,3 +1,4 @@
+import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from rest_framework.response import Response
@@ -10,18 +11,20 @@ from ...model.users.models import User
 
 
 class GithubSocialLoginView(APIView):
-    # TODO: 로그인 시 page_not_found 에러 해결하기
     def get(self, request):
         if request.user.is_authenticated:
             return Response({"error_msg": "이미 로그인한 상태입니다."})
         client_id = settings.GITHUB_ID
-        redirect_uri = "http://127.0.0.1:8000/accounts/login/github/callback/"
+        redirect_uri = "http://127.0.0.1:8000/accounts/login/github/callback"
         scope = "read:user"
         return redirect(
             f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}"
         )
 
-    def callback(self, request):
+
+class GithubCallBackView(APIView):
+    # TODO: 로그인 시 invalid_credentials 에러 해결
+    def get(self, request):
         if request.user.is_authenticated:
             return Response({"error_msg": "이미 로그인한 상태입니다."})
         code = request.GET.get("code", None)
@@ -31,7 +34,7 @@ class GithubSocialLoginView(APIView):
         client_id = settings.GITHUB_ID
         client_secret = settings.GITHUB_SECRET
 
-        github_request = request.post(
+        github_request = requests.post(
             f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
             headers={"Accept": "application/json"},
         )
@@ -40,7 +43,7 @@ class GithubSocialLoginView(APIView):
         if error is not None:
             return Response({"error_msg": f"{error}"})
         access_token = token_json.get("access_token")
-        profile_request = request.get(
+        profile_request = requests.get(
             "https://api.github.com/user",
             headers={
                 "Authorization": f"token {access_token}",
