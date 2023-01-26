@@ -33,3 +33,21 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "6442:5432"
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/Backend_Developer_Discovery
+    command: python developer_discover/manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+
+  web:
+    build: ../Frontend_Developer_Discovery
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../Frontend_Developer_Discovery:/Frontend_Developer_Discovery
+    command: npm start
