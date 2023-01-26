@@ -23,7 +23,6 @@ class GithubSocialLoginView(APIView):
 
 
 class GithubCallBackView(APIView):
-    # TODO: 로그인 시 invalid_credentials 에러 해결
     def get(self, request):
         if request.user.is_authenticated:
             return Response({"error_msg": "이미 로그인한 상태입니다."})
@@ -66,10 +65,8 @@ class GithubCallBackView(APIView):
 
         except User.DoesNotExist:
             user = User.objects.create(
-                username=email,
-                first_name=name,
+                name=name,
                 email=email,
-                login_method=User.LOGIN_GITHUB,
             )
 
             user.set_unusable_password()
