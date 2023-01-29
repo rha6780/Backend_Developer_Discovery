@@ -12,19 +12,6 @@ services:
 #       depends_on:
 #           - web
 
-#   web:
-#       build: .
-#       container_name: SR01
-#       command: bash -c "
-#           python3 manage.py collectstatic --no-input &&
-#           python3 manage.py makemigrations &&
-#           python3 manage.py migrate &&
-#           gunicorn project.wsgi:application -b 0:80"
-#       depends_on:
-#           - db
-#       volumes:
-#           - ./studyrun:/studyrun
-
   db:
     image: postgres:15-alpine
     environment:
@@ -32,15 +19,20 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - "6442:5432"
+      - "5432:5432"
 
   api:
     build: .
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db"
     ports:
       - "8000:8000"
     volumes:
       - .:/Backend_Developer_Discovery
-    command: python developer_discover/manage.py runserver 0.0.0.0:8000
+    command: bash -c "
+          python developer_discover/manage.py makemigrations &&
+          python developer_discover/manage.py migrate &&
+          python developer_discover/manage.py runserver 0.0.0.0:8000"
     depends_on:
       - db
 
