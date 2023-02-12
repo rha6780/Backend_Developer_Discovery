@@ -1,17 +1,6 @@
 version: '3.1'
 
 services:
-#   nginx:
-#       image: nginx:1.17.10
-#       container_name: nginx_SR01
-#       ports:
-#           - "80:80"
-#       volumes:
-#           - ./studyrun:/studyrun
-#           - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-#       depends_on:
-#           - web
-
   db:
     image: postgres:15-alpine
     environment:
@@ -40,6 +29,8 @@ services:
     build: ../Frontend_Developer_Discovery
     ports:
       - "3000:3000"
+    environment:
+      NODE_ENV: development
     volumes:
       - ../Frontend_Developer_Discovery:/Frontend_Developer_Discovery
-    command: npm start
+    command: npm run dev
