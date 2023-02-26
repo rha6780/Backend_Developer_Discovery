@@ -12,6 +12,7 @@ services:
 
   api:
     build: .
+    restart: always
     environment:
       - DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db"
     ports:

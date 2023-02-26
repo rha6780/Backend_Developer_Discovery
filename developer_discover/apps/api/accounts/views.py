@@ -1,8 +1,13 @@
 import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import redirect
 from django.contrib.auth import login
@@ -11,6 +16,9 @@ from ...model.users.models import User
 
 
 class GithubSocialLoginView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
     def get(self, request):
         if request.user.is_authenticated:
             return Response({"error_msg": "이미 로그인한 상태입니다."})
@@ -23,6 +31,9 @@ class GithubSocialLoginView(APIView):
 
 
 class GithubCallBackView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
     def get(self, request):
         if request.user.is_authenticated:
             return Response({"error_msg": "이미 로그인한 상태입니다."})
@@ -72,4 +83,14 @@ class GithubCallBackView(APIView):
             user.set_unusable_password()
             user.save()
         login(request, user)
+        if user:
+            if user.is_active:
+                refresh = RefreshToken.for_user(user)
+                return Response(
+                    {
+                        "refresh": str(refresh),
+                        "access": str(refresh.access_token),
+                    },
+                    status=status.HTTP_200_OK,
+                )
         return HttpResponseRedirect(redirect_to="http://127.0.0.1:3000")
