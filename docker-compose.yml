@@ -18,7 +18,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/Backend_Developer_Discovery
+      - ./developer_discover:/developer_discover
     command: bash -c "
           python developer_discover/manage.py makemigrations &&
           python developer_discover/manage.py migrate &&

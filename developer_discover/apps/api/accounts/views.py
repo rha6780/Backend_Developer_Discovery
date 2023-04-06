@@ -64,6 +64,7 @@ class GithubCallBackView(APIView):
         username = profile_response.get("login", None)
         email = profile_response.get("email", None)
         name = profile_response.get("name", None)
+
         if username is None:
             return Response({"error_msg": "Request에 username이 없습니다."})
         elif name is None:
@@ -82,15 +83,17 @@ class GithubCallBackView(APIView):
 
             user.set_unusable_password()
             user.save()
-        login(request, user)
-        if user:
-            if user.is_active:
-                refresh = RefreshToken.for_user(user)
-                return Response(
-                    {
-                        "refresh": str(refresh),
-                        "access": str(refresh.access_token),
-                    },
-                    status=status.HTTP_200_OK,
-                )
-        return HttpResponseRedirect(redirect_to="http://127.0.0.1:3000")
+
+        # login(request, user)
+        # if user is not None:
+        #     if user.is_active:
+        #         refresh = RefreshToken.for_user(user)
+        #         # return Response(
+        #         #     {
+        #         #         "refresh": str(refresh),
+        #         #         "access": str(refresh.access_token),
+        #         #     },
+        #         #     status=status.HTTP_200_OK,
+        #         # )
+
+        return HttpResponseRedirect("http://localhost:3000")
