@@ -45,6 +45,12 @@ class User(AbstractUser, PermissionsMixin):
         blank=True,
         null=True,
     )
+    locations = models.CharField(
+        "위치",
+        max_length=256,
+        default="",
+        blank=True,
+    )
 
     class Meta(AbstractUser.Meta):
         db_table = "users"
