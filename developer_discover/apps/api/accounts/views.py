@@ -1,3 +1,4 @@
+from email import header
 import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -84,16 +85,15 @@ class GithubCallBackView(APIView):
             user.set_unusable_password()
             user.save()
 
-        # login(request, user)
-        # if user is not None:
-        #     if user.is_active:
-        #         refresh = RefreshToken.for_user(user)
-        #         # return Response(
-        #         #     {
-        #         #         "refresh": str(refresh),
-        #         #         "access": str(refresh.access_token),
-        #         #     },
-        #         #     status=status.HTTP_200_OK,
-        #         # )
-
+        login(request, user)
+        if user is not None:
+            if user.is_active:
+                refresh = RefreshToken.for_user(user)
+                return Response(
+                    {
+                        "refresh": str(refresh),
+                        "access": str(refresh.access_token),
+                    },
+                    status=status.HTTP_200_OK,
+                )
         return HttpResponseRedirect("http://localhost:3000")
