@@ -73,6 +73,7 @@ APPLICATIONS = ["apps.api.v1", "apps.api.accounts"]
 
 MODELS = [
     "apps.model.users",
+    "apps.model.videos",
 ]
 
 INSTALLED_APPS = THIRD_PARTY + MODELS + APPLICATIONS + DJANGO_APPS

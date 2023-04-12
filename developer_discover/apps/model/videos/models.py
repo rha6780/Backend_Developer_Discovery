@@ -1,7 +1,8 @@
 from django.db import models
+from ..core.models import TimeStampedModel
 
 
-class Video(models):
+class Video(TimeStampedModel):
     """유트브 강의
     Notes:
         유튜브 강의 정보를 저장하는 테이블입니다. 강의의 링크 부터 정보, 제목 등으로 식별가능합니다.
