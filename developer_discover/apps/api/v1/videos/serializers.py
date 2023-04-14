@@ -5,7 +5,11 @@ from rest_framework import serializers
 class VideoListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = "__all__"
+        fields = (
+            "id",
+            "title",
+            "user",
+        )
 
 
 class VideoUpdateInputSerializer(serializers.ModelSerializer):

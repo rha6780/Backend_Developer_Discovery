@@ -1,35 +1,21 @@
-from rest_framework import status
-from rest_framework.response import Response
 from django.core.paginator import Paginator
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+
 from .serializers import VideoListSerializer, VideoUpdateInputSerializer
 from ....model.videos.models import Video
 
 
-class VideoListView(APIView):
+class VideoListView(ListAPIView):
     model = Video
+    queryset = Video.objects.all()
     serializer_class = VideoListSerializer
     permission_classes = []
-
-    def get(self, request):
-        # TODO: 모델에 카테고리를 넣고 해당 카테고리에 해당하는 값을 반환 하도록 수정
-        try:
-            data = Video.objects.first
-        except Video.DoesNotExist:
-            return Response("data")
-
-        if data == None:
-            return Response("data")
-
-        serializer = VideoListSerializer(data)
-        return Response(
-            {
-                "videos": "data",
-            },
-            status=status.HTTP_200_OK,
-        )
+    paginate_by = 10
 
 
 class VideoUpdateView(APIView):

@@ -6,6 +6,6 @@ from .views import VideoListView, VideoUpdateView
 
 
 urlpatterns = [
-    path("list", VideoListView.as_view(), name="list"),
+    path("list", VideoListView.as_view()),
     path("update", VideoUpdateView.as_view(), name="update"),
 ]
