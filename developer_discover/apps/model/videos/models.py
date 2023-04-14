@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from ..core.models import TimeStampedModel
 
@@ -13,7 +15,6 @@ class Video(TimeStampedModel):
         "제목",
         max_length=512,
         default="",
-        blank=True,
     )
     introduction = models.TextField(
         "소개",
@@ -25,7 +26,12 @@ class Video(TimeStampedModel):
         "유튜브 링크",
         max_length=2048,
         default="",
-        blank=True,
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="videos",
     )
 
     class Meta:
