@@ -1,33 +1,19 @@
 from email.policy import default
 from importlib.metadata import requires
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import UserManager
 from django.db import models
 
 
-class BasicUserManager(UserManager):
-    def create_user(self, email, name, password=None):
-        if not email:
-            raise ValueError(_("Users must have an email address"))
-
-        user = self.model(email=self.normalize_email(email), name=name)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, name, password):
-        pass
-
-
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractUser, PermissionsMixin):
     """유저 모델입니다.
     Notes:
         유저 아이디, 패스워드로 구성되고, 유저 식별 외 개인정보를 담지 않습니다.
     """
 
-    email = models.EmailField(
-        "이메일",
+    username = models.CharField(
+        "아이디",
         max_length=256,
         unique=True,
     )
@@ -47,13 +33,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         "스태프 권한",
         default=False,
     )
-
-    objects = BasicUserManager()
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = [
-        "name",
-        "password",
-    ]
 
     class Meta:
         db_table = "users"
