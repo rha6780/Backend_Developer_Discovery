@@ -2,18 +2,44 @@ from email import header
 import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect
+
+from django.shortcuts import redirect
+from django.contrib.auth import login
+
+from django.contrib.auth import get_user_model
+
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from django.shortcuts import redirect
-from django.contrib.auth import login
 
-from ...model.users.models import User
+# from ...model.users.models import User
+from .serializers import UserSignUpSerializer
+
+User = get_user_model()
+
+
+class UserSignUpView(CreateAPIView):
+    model = User
+    queryset = User.objects.all()
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = UserSignUpSerializer
+
+    # def post(self, request, *args, **kwargs):
+    #     payload = request.data
+
+    #     serializer = self.get_serializer(data=payload)
+    #     # serializer.create()
+    #     user = User.objects.get(email=payload["email"])
+    #     print(payload["email"], user)
+    #     login(request, user)
+    #     return HttpResponseRedirect("http://localhost:8000")
 
 
 class GithubSocialLoginView(APIView):
