@@ -17,7 +17,7 @@ class BasicUserManager(UserManager):
         return user
 
     def create_superuser(self, email, name, password):
-        pass  # ref: createsuperuser 에 password 필드 이름이 하드코딩 되어 있음.
+        pass
 
 
 class User(AbstractBaseUser, PermissionsMixin):
