@@ -67,6 +67,8 @@ THIRD_PARTY = [
     "allauth.socialaccount.providers.github",
     # jwt
     "rest_framework_simplejwt",
+    # swagger
+    "drf_yasg",
 ]
 
 APPLICATIONS = ["apps.api.v1", "apps.api.accounts"]
@@ -183,6 +185,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         # "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         # "rest_framework.authentication.SessionAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
     ),
