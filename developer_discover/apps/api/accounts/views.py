@@ -10,36 +10,86 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 # from ...model.users.models import User
-from .serializers import UserSignUpSerializer
+from .serializers import UserSignUpSerializer, UserSignInSerializer
 
 User = get_user_model()
 
 
-class UserSignUpView(CreateAPIView):
+class UserSignUpView(APIView):
     model = User
     queryset = User.objects.all()
     authentication_classes = []
     permission_classes = []
     serializer_class = UserSignUpSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     payload = request.data
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        print("serializer:", serializer)
+        print("is_valid:", serializer.is_valid())
+        print("errors:", serializer.errors)
 
-    #     serializer = self.get_serializer(data=payload)
-    #     # serializer.create()
-    #     user = User.objects.get(email=payload["email"])
-    #     print(payload["email"], user)
-    #     login(request, user)
-    #     return HttpResponseRedirect("http://localhost:8000")
+        if serializer.is_valid():
+            user = serializer.save(request=request)
+            token = TokenObtainPairSerializer.get_token(user)
+            refresh_token = str(token)
+            access_token = str(token.access_token)
+            res = Response(
+                {
+                    "user": serializer.data,
+                    "message": "register successs",
+                    "token": {
+                        "access": access_token,
+                        "refresh": refresh_token,
+                    },
+                },
+                status=status.HTTP_200_OK,
+            )
+            res.set_cookie("access", access_token, httponly=True)
+            res.set_cookie("refresh", refresh_token, httponly=True)
+            return res
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserSignInView(APIView):
+    model = User
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = UserSignInSerializer
+
+    def post(self, request):
+        user = JWTAuthentication.authenticate(
+            username=request.data.get("username"), password=request.data.get("password")
+        )
+        print("조회 유저:", user)
+        if user is not None:
+            serializer = UserSignInSerializer(user)
+            token = TokenObtainPairSerializer.get_token(user)
+            refresh_token = str(token)
+            access_token = str(token.access_token)
+            res = Response(
+                {
+                    "user": serializer.data,
+                    "message": "login success",
+                    "token": {
+                        "access": access_token,
+                        "refresh": refresh_token,
+                    },
+                },
+                status=status.HTTP_200_OK,
+            )
+            return res
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class GithubSocialLoginView(APIView):
