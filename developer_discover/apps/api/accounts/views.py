@@ -52,8 +52,8 @@ class UserSignUpView(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
-            res.set_cookie("access", access_token, httponly=True)
-            res.set_cookie("refresh", refresh_token, httponly=True)
+            # res.set_cookie("access", access_token, httponly=True, secure=True)
+            res.set_cookie("refresh", refresh_token, httponly=True, secure=True)
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
