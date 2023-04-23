@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from ..models import Video
-from apps.model.users.tests.factories import VideoFactory
+from .factories import VideoFactory
 
 
 class VideoModelTestCase(TestCase):

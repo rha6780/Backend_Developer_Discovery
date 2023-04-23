@@ -2,18 +2,19 @@ default_language_version:
   python: python3.10
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 23.3.0
     hooks:
       - id: black
         exclude: ^.*\b(migrations|settings)\b.*$
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 6.0.0
     hooks:
       - id: flake8
         args: ["--max-line-length=88"]
         exclude: ^.*\b(migrations|settings)\b.*/.*$
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        args: ["--filter-files"]
+  # - repo: https://github.com/PyCQA/isort
+  #   rev: 5.10.1
+  #   hooks:
+  #     - id: isort
+  #       args: ["--filter-files"]
+  #       exclude: ^.*\b(migrations|settings)\b.*/.*$

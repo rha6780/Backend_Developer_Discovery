@@ -29,8 +29,6 @@ schema_view = get_schema_view(
         default_version="",
         description="API Docs",
         terms_of_service="https://www.google.com/policies/terms/",
-        # contact=openapi.Contact(email="이메일"),  # 부가정보
-        # license=openapi.License(name="mit"),  # 부가정보
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
