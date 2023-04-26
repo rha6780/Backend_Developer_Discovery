@@ -17,6 +17,14 @@ class AccountViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_exist_user_data(self):
+        valid_data = {"username": "test1", "password": "test-password", "name": "test"}
+        response = self.client.post(reverse("sign-up"), valid_data, format="json")
+        self.assertEqual(response.status_code, 200)
+        valid_data = {"username": "test1", "password": "test-password", "name": "test"}
+        error_response = self.client.post(reverse("sign-up"), valid_data, format="json")
+        self.assertEqual(error_response.status_code, 400)
+
+    def test_invalid_user_data(self):
         invalid_data = {"username": "", "password": "test-password", "name": "test"}
         response = self.client.post(reverse("sign-up"), invalid_data, format="json")
         self.assertEqual(response.status_code, 400)

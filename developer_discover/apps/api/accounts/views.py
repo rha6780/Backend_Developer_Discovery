@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 
 from django.shortcuts import redirect
 from django.contrib.auth import login
-
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
@@ -43,8 +43,8 @@ class UserSignUpView(APIView):
             access_token = str(token.access_token)
             res = Response(
                 {
-                    "user": serializer.data,
-                    "message": "register successs",
+                    "user": request.data["username"],
+                    "message": "user register successs",
                     "token": {
                         "access": access_token,
                         "refresh": refresh_token,
@@ -58,6 +58,7 @@ class UserSignUpView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# https://medium.com/@schverakj/how-to-hash-passwords-in-next-js-for-logins-9d036378984c
 class UserSignInView(APIView):
     model = User
     authentication_classes = []
@@ -65,11 +66,12 @@ class UserSignInView(APIView):
     serializer_class = UserSignInSerializer
 
     def post(self, request):
-        user = JWTAuthentication.authenticate(
-            username=request.data.get("username"), password=request.data.get("password")
-        )
-        print("조회 유저:", user)
+        params = request.data
+        user = User.objects.filter(username=params["username"]).first()
+
         if user is not None:
+            if not check_password(params["password"], user.password):
+                return Response({"message": "password invalid"}, status=status.HTTP_400_BAD_REQUEST)
             serializer = UserSignInSerializer(user)
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
@@ -85,8 +87,9 @@ class UserSignInView(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
+            res.set_cookie("refresh", refresh_token, httponly=True, secure=True)
             return res
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "user not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GithubSocialLoginView(APIView):

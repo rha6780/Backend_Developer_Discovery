@@ -25,6 +25,12 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def validate_password(self, data):
+        password = data.get("password", None)
+        if password:
+            raise serializers.ValidationError("password invalid")
+        return data
+
     def validate(self, data):
         username = data.get("username", None)
         if User.objects.filter(username=username).exists():
