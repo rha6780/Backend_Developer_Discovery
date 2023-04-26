@@ -11,8 +11,8 @@ exclude = '''
   | Pipfile.lock
   | settings
   | migrations
-  | wsgi
-  | asgi
+  | wsgi.py
+  | asgi.py
 )/
 '''
 
