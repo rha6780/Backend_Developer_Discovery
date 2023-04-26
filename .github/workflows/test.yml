@@ -54,5 +54,6 @@ jobs:
 
       - name: Run Test
         run: |
+          pipenv shell
           cd developer_discover
           python manage.py test
