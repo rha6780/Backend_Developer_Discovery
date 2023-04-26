@@ -1,11 +1,11 @@
-name: push_workflow
+name: Lint & Test Checker
 
 on: push
 
 jobs:
 
   linter:
-    name: linter
+    name: Lint Checker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,9 +13,8 @@ jobs:
       # - uses: isort/isort-action@master
 
   test:
-
+    name: Test Checker
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:10.16
@@ -54,6 +53,4 @@ jobs:
 
       - name: Run Test
         run: |
-          pipenv shell
-          cd developer_discover
-          python manage.py test
+          pipenv run python3 developer_discover/manage.py test --settings=developer_discover.settings.test
