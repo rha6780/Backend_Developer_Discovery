@@ -1,17 +1,13 @@
-import environ
-
 from .base import *
 
-environ.Env.read_env(BASE_DIR.parent / ".envs" / ".test")
-
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = "github_test_secret_key"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("POSTGRES_HOST"),
-        "PORT": env("POSTGRES_PORT"),
+        "NAME": "test_db",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
