@@ -51,3 +51,7 @@ jobs:
           pip install --upgrade pip && pip install pipenv
           pipenv install --dev --ignore-pipfile
           pipenv --venv
+
+      - name: Run Test
+        run: |
+          python manage.py test
