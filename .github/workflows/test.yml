@@ -53,4 +53,4 @@ jobs:
 
       - name: Run Test
         run: |
-          pipenv run python3 developer_discover/manage.py test developer_discover
+          pipenv run python3 developer_discover/manage.py test --settings=developer_discover.settings.test developer_discover
