@@ -11,7 +11,7 @@ exclude = '''
   | Pipfile.lock
   | settings
   | migrations
-  | developer_discover/developer_discover/
+  | developer_discover/developer_discover/*
 )/
 '''
 
