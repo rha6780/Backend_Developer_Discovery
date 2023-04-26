@@ -15,25 +15,23 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ("username", "name", "password")
+        fields = ("email", "name", "password")
 
     def save(self, request):
         user = super().save()
-        user.username = self.validated_data["username"]
+        user.email = self.validated_data["email"]
         user.name = self.validated_data["name"]
         user.set_password(self.validated_data["password"])
         user.save()
         return user
 
-    def validate_password(self, data):
-        password = data.get("password", None)
-        if password:
-            raise serializers.ValidationError("password invalid")
-        return data
+    # def validate_password(self, password):
+    #     if password:
+    #         raise serializers.ValidationError("password invalid")
 
     def validate(self, data):
-        username = data.get("username", None)
-        if User.objects.filter(username=username).exists():
+        email = data.get("email", None)
+        if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("user already exists")
         return data
 
@@ -41,4 +39,4 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 class UserSignInSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ("username", "password")
+        fields = ("email", "password")

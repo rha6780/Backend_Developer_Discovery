@@ -43,7 +43,7 @@ class UserSignUpView(APIView):
             access_token = str(token.access_token)
             res = Response(
                 {
-                    "user": request.data["username"],
+                    "user": request.data["email"],
                     "message": "user register successs",
                     "token": {
                         "access": access_token,
@@ -67,7 +67,7 @@ class UserSignInView(APIView):
 
     def post(self, request):
         params = request.data
-        user = User.objects.filter(username=params["username"]).first()
+        user = User.objects.filter(email=params["email"]).first()
 
         if user is not None:
             if not check_password(params["password"], user.password):
