@@ -54,4 +54,5 @@ jobs:
 
       - name: Run Test
         run: |
+          cd developer_discover
           python manage.py test
