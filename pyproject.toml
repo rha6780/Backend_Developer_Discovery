@@ -9,7 +9,8 @@ exclude = '''
   | README.md
   | Pipfile
   | Pipfile.lock
-  | studysite
+  | settings
+  | migrations
 )/
 '''
 
