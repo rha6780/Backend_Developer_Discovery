@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
@@ -5,14 +7,6 @@ User = get_user_model()
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
-    # def create(self, validated_data):
-    #     user = User.objects.create_user(
-    #         username=validated_data["username"],
-    #         name=validated_data["name"],
-    #         password=validated_data["password"],
-    #     )
-    #     return user
-
     class Meta:
         model = get_user_model()
         fields = ("email", "name", "password")
@@ -25,14 +19,14 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-    # def validate_password(self, password):
-    #     if password:
-    #         raise serializers.ValidationError("password invalid")
-
     def validate(self, data):
         email = data.get("email", None)
+        password = data.get("password", None)
+        validate_password(password)
+
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("user already exists")
+
         return data
 
 
