@@ -19,6 +19,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+# Email
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.core.mail import EmailMessage
+from django.utils.encoding import force_bytes
+
+# from .tokens import account_activation_token
 
 # from ...model.users.models import User
 from .serializers import UserSignUpSerializer, UserSignInSerializer
@@ -90,6 +98,36 @@ class UserSignInView(APIView):
             res.set_cookie("refresh", refresh_token, httponly=True, secure=True)
             return res
         return Response({"message": "user not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserPasswordView(APIView):
+    model = User
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        email = request.data.get("email")
+        user = User.objects.get(email=email)
+        current_site = get_current_site(request)
+        message = render_to_string(
+            "reset_password.html",
+            {
+                "domain": current_site.domain,
+                "uid": urlsafe_base64_encode(force_bytes(user.id)),
+                "token": "token_test",
+            },
+        )
+        mail_title = "비밀번호 재설정 이메일"
+        # mail_to = request.POST["email"]
+        email = EmailMessage(mail_title, message, to=[email])
+        email.send()
+        return Response({"이메일 전송 중"}, status=status.HTTP_200_OK)
+
+    def get(self, request, *args, **kwags):
+        print("확인...")
+        return Response({"이메일 리디렉션"}, status=status.HTTP_200_OK)
+
+    # def update(self, request, *args, **kwags):
 
 
 class GithubSocialLoginView(APIView):

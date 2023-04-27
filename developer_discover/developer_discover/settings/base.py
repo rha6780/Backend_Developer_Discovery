@@ -131,9 +131,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-        "OPTIONS" : {
-            "min_length": 8,
-        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -194,6 +191,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+# password reset
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = ""
+EMAIL_PORT = ""
+EMAIL_HOST_USER = ""
+EMAIL_USE_TLS = ""
+EMAIL_USE_SSL = ""
 
 # github account params
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
