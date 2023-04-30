@@ -14,9 +14,11 @@ ENV PYTHONUNBUFFERED 1
 RUN apt update -y && apt install -y build-essential libpq-dev
 
 ## pip 라이브러리 설치
-RUN pip install --upgrade pip
-RUN pip install psycopg2-binary --no-binary psycopg2-binary
+RUN pip install --upgrade pip && \
+    pip install psycopg2-binary --no-binary psycopg2-binary
+    
 COPY ./requirements.txt /requirements.txt
+
 RUN chmod +x /requirements.txt
 RUN pip install -r /requirements.txt
 
