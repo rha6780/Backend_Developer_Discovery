@@ -71,7 +71,11 @@ THIRD_PARTY = [
     "drf_yasg",
 ]
 
-APPLICATIONS = ["apps.api.v1", "apps.api.accounts"]
+APPLICATIONS = [
+    "apps.api.v1",
+    "apps.api.accounts",
+    "core",
+]
 
 MODELS = [
     "apps.model.users",
