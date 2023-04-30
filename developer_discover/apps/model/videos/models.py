@@ -27,6 +27,10 @@ class Video(TimeStampedModel):
         max_length=2048,
         default="",
     )
+    thumbnail = models.ImageField(
+        "썸네일",
+        null=True,
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

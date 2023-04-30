@@ -74,7 +74,6 @@ THIRD_PARTY = [
 APPLICATIONS = [
     "apps.api.v1",
     "apps.api.accounts",
-    "core",
 ]
 
 MODELS = [

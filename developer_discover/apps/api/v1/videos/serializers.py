@@ -9,6 +9,8 @@ class VideoListSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "user",
+            "youtube_link",
+            "thumbnail",
         )
 
 
