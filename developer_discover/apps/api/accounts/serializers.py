@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -30,7 +31,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return data
 
 
-class UserSignInSerializer(serializers.ModelSerializer):
+class UserSignInSerializer(serializers.ModelSerializer, TokenObtainPairSerializer):
     class Meta:
         model = get_user_model()
         fields = ("email", "password")

@@ -8,16 +8,14 @@ from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 
+from rest_framework.authtoken.models import Token
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Email
 from django.contrib.sites.shortcuts import get_current_site
@@ -81,7 +79,7 @@ class UserSignInView(APIView):
             if not check_password(params["password"], user.password):
                 return Response({"message": "password invalid"}, status=status.HTTP_400_BAD_REQUEST)
             serializer = UserSignInSerializer(user)
-            token = TokenObtainPairSerializer.get_token(user)
+            token = TokenObtainPairSerializer.validate(self, attrs=params)
             refresh_token = str(token)
             access_token = str(token.access_token)
             res = Response(
@@ -108,26 +106,39 @@ class UserPasswordView(APIView):
     def post(self, request):
         email = request.data.get("email")
         user = User.objects.get(email=email)
+        token, is_created = Token.objects.get_or_create(user=user)
         current_site = get_current_site(request)
         message = render_to_string(
             "reset_password.html",
             {
                 "domain": current_site.domain,
-                "uid": urlsafe_base64_encode(force_bytes(user.id)),
-                "token": "token_test",
+                "uid": urlsafe_base64_encode(force_bytes(email)),
+                "token": str(token),
             },
         )
-        mail_title = "비밀번호 재설정 이메일"
-        # mail_to = request.POST["email"]
+        mail_title = "Developer Discovery - 비밀번호 재설정 메일"
         email = EmailMessage(mail_title, message, to=[email])
         email.send()
-        return Response({"이메일 전송 중"}, status=status.HTTP_200_OK)
+        return Response({"message": "email sending"}, status=status.HTTP_200_OK)
+
+
+class UserPasswordConfirmView(APIView):
+    model = User
+    permission_classes = []
 
     def get(self, request, *args, **kwags):
-        print("확인...")
-        return Response({"이메일 리디렉션"}, status=status.HTTP_200_OK)
+        email = urlsafe_base64_decode(kwags["uid64"]).decode("utf-8")
+        token = kwags["token"]
+        print("이메일:", email)
 
-    # def update(self, request, *args, **kwags):
+        user = User.objects.get(email=email)
+        origin_token = Token.objects.get(user=user)
+        print(token, str(origin_token))
+        if str(token) == str(origin_token):
+            response = HttpResponseRedirect("http://127.0.0.1:3000/resetpassword")
+            response.set_cookie("refresh", token, httponly=True, secure=True)
+            return response
+        return redirect("http://127.0.0.1:3000")
 
 
 class GithubSocialLoginView(APIView):
