@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
 
 from rest_framework.authtoken.models import Token
 
@@ -27,7 +28,7 @@ from django.utils.encoding import force_bytes
 # from .tokens import account_activation_token
 
 # from ...model.users.models import User
-from .serializers import UserSignUpSerializer, UserSignInSerializer
+from .serializers import UserSignUpSerializer, UserSignInSerializer, UserPasswordResetSerializer
 
 User = get_user_model()
 
@@ -64,7 +65,6 @@ class UserSignUpView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# https://medium.com/@schverakj/how-to-hash-passwords-in-next-js-for-logins-9d036378984c
 class UserSignInView(APIView):
     model = User
     authentication_classes = []
@@ -98,7 +98,7 @@ class UserSignInView(APIView):
         return Response({"message": "user not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserPasswordView(APIView):
+class UserEmailConfirmView(APIView):
     model = User
     authentication_classes = []
     permission_classes = []
@@ -119,26 +119,29 @@ class UserPasswordView(APIView):
         mail_title = "Developer Discovery - 비밀번호 재설정 메일"
         email = EmailMessage(mail_title, message, to=[email])
         email.send()
-        return Response({"message": "email sending"}, status=status.HTTP_200_OK)
+        return Response({"message": "Email Sending"}, status=status.HTTP_200_OK)
 
 
-class UserPasswordConfirmView(APIView):
+class UserPasswordResetView(APIView):
     model = User
     permission_classes = []
+    serializer_class = UserPasswordResetSerializer
 
-    def get(self, request, *args, **kwags):
-        email = urlsafe_base64_decode(kwags["uid64"]).decode("utf-8")
-        token = kwags["token"]
-        print("이메일:", email)
+    def post(self, request, *args, **kwags):
+        params = request.data
+        serializer = self.serializer_class(data=params)
+        token = Token.objects.get(key=params["token"])
 
-        user = User.objects.get(email=email)
-        origin_token = Token.objects.get(user=user)
-        print(token, str(origin_token))
-        if str(token) == str(origin_token):
-            response = HttpResponseRedirect("http://127.0.0.1:3000/resetpassword")
-            response.set_cookie("refresh", token, httponly=True, secure=True)
-            return response
-        return redirect("http://127.0.0.1:3000")
+        if token is None:
+            return Response({"message": "Invalid token"}, status.HTTP_404_NOT_FOUND)
+        if not serializer.is_valid():
+            print(params["password"], serializer.is_valid())
+            return Response({"message": "Invalid password"}, status.HTTP_400_BAD_REQUEST)
+        user = User.objects.get(id=token.user_id)
+        user.set_password(params["password"])
+        user.save()
+        token.delete()
+        return Response({"message": "Update compelete"}, status.HTTP_200_OK)
 
 
 class GithubSocialLoginView(APIView):

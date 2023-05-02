@@ -35,3 +35,15 @@ class UserSignInSerializer(serializers.ModelSerializer, TokenObtainPairSerialize
     class Meta:
         model = get_user_model()
         fields = ("email", "password")
+
+
+class UserPasswordResetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["password"]
+
+    def validate(self, data):
+        password = data.get("password", None)
+        validate_password(password)
+
+        return data
