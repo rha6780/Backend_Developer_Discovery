@@ -118,6 +118,7 @@ class UserEmailConfirmView(APIView):
         )
         mail_title = "Developer Discovery - 비밀번호 재설정 메일"
         email = EmailMessage(mail_title, message, to=[email])
+        email.content_subtype = "html"
         email.send()
         return Response({"message": "Email Sending"}, status=status.HTTP_200_OK)
 
