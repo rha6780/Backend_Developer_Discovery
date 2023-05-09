@@ -59,7 +59,7 @@ class UserSignUpView(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
-            # res.set_cookie("access", access_token, httponly=True, secure=True)
+            res.set_cookie("access", access_token, httponly=True, secure=True)
             res.set_cookie("refresh", refresh_token, httponly=True, secure=True)
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -78,13 +78,12 @@ class UserSignInView(APIView):
         if user is not None:
             if not check_password(params["password"], user.password):
                 return Response({"message": "password invalid"}, status=status.HTTP_400_BAD_REQUEST)
-            serializer = UserSignInSerializer(user)
-            token = TokenObtainPairSerializer.validate(self, attrs=params)
+            token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
             res = Response(
                 {
-                    "user": serializer.data,
+                    "user": params["email"],
                     "message": "login success",
                     "token": {
                         "access": access_token,
@@ -93,6 +92,7 @@ class UserSignInView(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
+            res.set_cookie("access", access_token, httponly=True, secure=True)
             res.set_cookie("refresh", refresh_token, httponly=True, secure=True)
             return res
         return Response({"message": "user not found"}, status=status.HTTP_400_BAD_REQUEST)
