@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.models import Permission
 
 from .serializers import VideoListSerializer, VideoUpdateInputSerializer
 from ....model.videos.models import Video
@@ -26,4 +27,4 @@ class VideoCreateView(CreateAPIView):
         payload = request.data
         payload["user"] = request.user
 
-        serializer = self.get_serializer(data=payload)
+        # serializer = self.get_serializer(data=payload)

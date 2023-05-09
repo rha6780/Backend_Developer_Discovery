@@ -8,6 +8,7 @@ class VideoListSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "title",
+            "introduction",
             "user",
             "youtube_link",
             "thumbnail",
