@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import Permission
 
 from .serializers import VideoListSerializer, VideoUpdateInputSerializer
+from .paginations import VideoListPagination
 from ....model.videos.models import Video
 
 
@@ -15,7 +16,8 @@ class VideoListView(ListAPIView):
     queryset = Video.objects.all()
     serializer_class = VideoListSerializer
     permission_classes = []
-    paginate_by = 10
+    pagination_class = VideoListPagination
+    page_size = 4
 
 
 class VideoCreateView(CreateAPIView):
