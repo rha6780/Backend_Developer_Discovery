@@ -42,13 +42,13 @@ class ChangePasswordView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    # def patch(self, request):
-    # TODO: 비밀번호 변경 로직 추가
-
-
-class UserDestroyView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    # def delete(self, request):
-    # TODO: 유저 탈퇴 로직 추가
+    def patch(self, request):
+        # TODO: 비밀번호 변경 로직 validation 관련 체크
+        params = request.data
+        user = request.user
+        if user is not None:
+            user.set_password(params["password"])
+            user.save()
+            return Response("{}", status.HTTP_200_OK)
+        else:
+            return Response("{}", status.HTTP_400_BAD_REQUEST)

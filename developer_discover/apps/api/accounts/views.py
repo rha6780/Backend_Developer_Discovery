@@ -9,14 +9,16 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 # Email
 from django.contrib.sites.shortcuts import get_current_site
@@ -136,13 +138,24 @@ class UserPasswordResetView(APIView):
         if token is None:
             return Response({"message": "Invalid token"}, status.HTTP_404_NOT_FOUND)
         if not serializer.is_valid():
-            print(params["password"], serializer.is_valid())
             return Response({"message": "Invalid password"}, status.HTTP_400_BAD_REQUEST)
         user = User.objects.get(id=token.user_id)
         user.set_password(params["password"])
         user.save()
         token.delete()
         return Response({"message": "Update compelete"}, status.HTTP_200_OK)
+
+
+# TODO: 회원 탈퇴 관련 로직 추가
+class UserDestroyView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        if user is None:
+            return Response("{}", status.HTTP_403_FORBIDDEN)
+        user.delete()
 
 
 class GithubSocialLoginView(APIView):
