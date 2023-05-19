@@ -24,7 +24,7 @@ class ChangeEmailView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def patch(self, request):
         user = request.user
         email = request.data["changed_email"]
         if request.user is not None:
@@ -36,3 +36,19 @@ class ChangeEmailView(APIView):
                 return Response({"error_msg": "invalid email"}, status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error_msg": "비 로그인 상태입니다."}, status.HTTP_401_UNAUTHORIZED)
+
+
+class ChangePasswordView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    # def patch(self, request):
+    # TODO: 비밀번호 변경 로직 추가
+
+
+class UserDestroyView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    # def delete(self, request):
+    # TODO: 유저 탈퇴 로직 추가
