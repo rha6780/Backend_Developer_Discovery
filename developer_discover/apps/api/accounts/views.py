@@ -9,6 +9,8 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
+from drf_yasg.utils import swagger_auto_schema
+
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -42,6 +44,9 @@ class UserSignUpView(APIView):
     permission_classes = []
     serializer_class = UserSignUpSerializer
 
+    @swagger_auto_schema(
+        tags=["유저 계정 관련 API"], query_serializer=UserSignUpSerializer, responses={200: "성공", 400: "파라미터가 유효하지 않음"}
+    )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
 
@@ -73,6 +78,9 @@ class UserSignInView(APIView):
     permission_classes = []
     serializer_class = UserSignInSerializer
 
+    @swagger_auto_schema(
+        tags=["유저 계정 관련 API"], query_serializer=UserSignInSerializer, responses={200: "성공", 400: "파라미터가 유효하지 않음"}
+    )
     def post(self, request):
         params = request.data
         user = User.objects.filter(email=params["email"]).first()
@@ -105,6 +113,7 @@ class UserEmailConfirmView(APIView):
     authentication_classes = []
     permission_classes = []
 
+    @swagger_auto_schema(tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success"})
     def post(self, request):
         email = request.data.get("email")
         user = User.objects.get(email=email)
@@ -130,13 +139,18 @@ class UserPasswordResetView(APIView):
     permission_classes = []
     serializer_class = UserPasswordResetSerializer
 
+    @swagger_auto_schema(
+        tags=["유저 계정 관련 API"],
+        query_serializer=UserPasswordResetSerializer,
+        responses={200: "성공", 400: "파라미터 또는 토큰이 유효하지 않음"},
+    )
     def post(self, request, *args, **kwags):
         params = request.data
         serializer = self.serializer_class(data=params)
         token = Token.objects.get(key=params["token"])
 
         if token is None:
-            return Response({"message": "Invalid token"}, status.HTTP_404_NOT_FOUND)
+            return Response({"message": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
         if not serializer.is_valid():
             return Response({"message": "Invalid password"}, status.HTTP_400_BAD_REQUEST)
         user = User.objects.get(id=token.user_id)
@@ -151,10 +165,11 @@ class UserDestroyView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 401: "인증되지 않은 사용자"})
     def delete(self, request):
         user = request.user
         if user is None:
-            return Response("{}", status.HTTP_403_FORBIDDEN)
+            return Response("{}", status.HTTP_401_UNAUTHORIZED)
         user.delete()
 
 

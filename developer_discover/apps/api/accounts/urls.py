@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
-from .views import GithubSocialLoginView, GithubCallBackView, UserSignUpView, UserSignInView
+from .views import GithubSocialLoginView, GithubCallBackView, UserDestroyView, UserSignUpView, UserSignInView
 from .views import UserEmailConfirmView, UserPasswordResetView
 
 
@@ -13,6 +13,7 @@ urlpatterns = [
     path("signin", UserSignInView.as_view(), name="sign-in"),
     path("email-check", UserEmailConfirmView.as_view(), name="email-check"),
     path("reset-password", UserPasswordResetView.as_view(), name="reset-password"),
+    path("withdrawal", UserDestroyView.as_view(), name="withdrawal"),
     path("", include("dj_rest_auth.urls")),
 ]
 # /<str:uidb64>/<str:token>/
