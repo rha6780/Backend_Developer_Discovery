@@ -32,7 +32,12 @@ from django.utils.encoding import force_bytes
 # from .tokens import account_activation_token
 
 # from ...model.users.models import User
-from .serializers import UserSignUpSerializer, UserSignInSerializer, UserPasswordResetSerializer
+from .serializers import (
+    UserSignUpSerializer,
+    UserSignInSerializer,
+    UserPasswordResetSerializer,
+    UserEmailConfirmSerializer,
+)
 
 User = get_user_model()
 
@@ -112,26 +117,30 @@ class UserEmailConfirmView(APIView):
     model = User
     authentication_classes = []
     permission_classes = []
+    serializer_class = UserEmailConfirmSerializer
 
-    @swagger_auto_schema(tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success"})
+    @swagger_auto_schema(tags=["유저 계정 관련 API"], query_serializer=UserSignInSerializer, responses={200: "Success"})
     def post(self, request):
-        email = request.data.get("email")
-        user = User.objects.get(email=email)
-        token, is_created = Token.objects.get_or_create(user=user)
-        current_site = get_current_site(request)
-        message = render_to_string(
-            "reset_password.html",
-            {
-                "domain": current_site.domain,
-                "uid": urlsafe_base64_encode(force_bytes(email)),
-                "token": str(token),
-            },
-        )
-        mail_title = "Developer Discovery - 비밀번호 재설정 메일"
-        email = EmailMessage(mail_title, message, to=[email])
-        email.content_subtype = "html"
-        email.send()
-        return Response({"message": "Email Sending"}, status=status.HTTP_200_OK)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            email = request.data.get("email")
+            user = User.objects.get(email=email)
+            token, is_created = Token.objects.get_or_create(user=user)
+            current_site = get_current_site(request)
+            message = render_to_string(
+                "reset_password.html",
+                {
+                    "domain": current_site.domain,
+                    "uid": urlsafe_base64_encode(force_bytes(email)),
+                    "token": str(token),
+                },
+            )
+            mail_title = "Developer Discovery - 비밀번호 재설정 메일"
+            email = EmailMessage(mail_title, message, to=[email])
+            email.content_subtype = "html"
+            email.send()
+            return Response({"message": "Email Sending"}, status.HTTP_200_OK)
+        return Response({"error_msg": "invalid email"}, status.HTTP_400_BAD_REQUEST)
 
 
 class UserPasswordResetView(APIView):
