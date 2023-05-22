@@ -72,6 +72,7 @@ THIRD_PARTY = [
 ]
 
 APPLICATIONS = [
+    "core",
     "apps.api.v1",
     "apps.api.accounts",
 ]
