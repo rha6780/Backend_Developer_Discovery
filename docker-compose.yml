@@ -20,6 +20,7 @@ services:
     volumes:
       - ./developer_discover:/developer_discover
     command: bash -c "
+          python developer_discover/manage.py db_connection &&
           python developer_discover/manage.py makemigrations &&
           python developer_discover/manage.py migrate &&
           python developer_discover/manage.py runserver 0.0.0.0:8000"
