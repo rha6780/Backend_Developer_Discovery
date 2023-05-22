@@ -8,11 +8,11 @@ from django.db import models
 
 
 class BasicUserManager(UserManager):
-    def create_user(self, email, name, password):
+    def create_user(self, email, name, password, **extra_field):
         if not email:
             raise ValueError(("Users must have an email address"))
         validate_password(password)
-        user = self.model(email=self.normalize_email(email), name=name)
+        user = self.model(email=self.normalize_email(email), name=name, **extra_field)
         user.set_password(password)
         user.save(using=self._db)
         return user
