@@ -285,7 +285,7 @@ LOGGING = {
             'level': 'INFO',
             'encoding': 'utf-8',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/server.log',
+            'filename': os.path.join(BASE_DIR, "logs/server.log"),
             'formatter': 'standard',
         },
     },
