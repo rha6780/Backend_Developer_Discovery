@@ -1,10 +1,18 @@
 version: 0.0
 os: linux
+permissions:
+  - object: /home/ubuntu/
+    owner: ubuntu
+    group: ubuntu
+    mode: 644
+    type:
+      - directory
+      - file
 files:
   - source: /
     destination: /home/ubuntu/build
 hooks:
   AfterInstall:
-    - location: /start.sh
+    - location: scripts/start.sh
       runas: root
       
