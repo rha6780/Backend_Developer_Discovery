@@ -22,7 +22,7 @@ class ChangeEmailViewTestCase(TestCase):
         refresh = RefreshToken.for_user(self.user)
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
-        response = client.post(reverse("email"), self.valid_email_data, format="json")
+        response = client.patch(reverse("email"), self.valid_email_data, format="json")
         force_authenticate(request, user=self.user)
 
         self.assertEqual(response.status_code, 200)
@@ -33,7 +33,7 @@ class ChangeEmailViewTestCase(TestCase):
         refresh = RefreshToken.for_user(self.user)
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
-        response = client.post(reverse("email"), self.invalid_email_data, format="json")
+        response = client.patch(reverse("email"), self.invalid_email_data, format="json")
         force_authenticate(request, user=self.user)
 
         self.assertEqual(response.status_code, 400)
