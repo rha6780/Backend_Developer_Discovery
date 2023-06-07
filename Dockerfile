@@ -1,8 +1,7 @@
-# image 빌드
-FROM ubuntu:18.04
+FROM ubuntu:18.04 as base
 FROM python:3.10.0-slim
 
-# set working directory
+# set working directory 
 WORKDIR .
 
 # set environment variables
