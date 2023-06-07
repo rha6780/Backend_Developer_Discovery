@@ -1,6 +1,7 @@
 # Backend Developer Discovery 개발
 - [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
 - Frontend는 SSR로 제공됨으로 해당 프로젝트에 node 서버 및 db 등을 docker-compose를 이용해 구성합니다.
+- Infra 부분은 Infra_Developer_Discovery 에 있습니다.
 - 초반에 구성한 페이지도 있습니다.
 
 
@@ -21,3 +22,8 @@ POSTGRES_PASSWORD=postgres
 POSTGRES_HOST=127.0.0.1
 POSTGRES_PORT=5432
 ```
+
+## Architecture
+
+### DB ERD
+![Developer Discovery](https://github.com/rha6780/Backend_Developer_Discovery/assets/47859845/54dfd9c9-8850-4043-aa3f-f6690cc627c1)
