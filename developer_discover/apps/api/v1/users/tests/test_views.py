@@ -28,6 +28,7 @@ class CurrentUserViewTestCase(TestCase):
         force_authenticate(request, user=self.user)
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {"id": self.user.id, "email": "test@test.com", "name": "test"})
 
 
 # https://stackoverflow.com/questions/47576635/django-rest-framework-jwt-unit-test
@@ -47,8 +48,10 @@ class ChangeEmailViewTestCase(TestCase):
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = client.patch(reverse("email"), self.valid_email_data, format="json")
         force_authenticate(request, user=self.user)
+        self.user.refresh_from_db()
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.user.email, "test1@test.com")
 
     def test_invalid_email_data(self):
         client = APIClient()
@@ -58,8 +61,10 @@ class ChangeEmailViewTestCase(TestCase):
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = client.patch(reverse("email"), self.invalid_email_data, format="json")
         force_authenticate(request, user=self.user)
+        self.user.refresh_from_db()
 
         self.assertEqual(response.status_code, 400)
+        self.assertEqual(self.user.email, "test@test.com")
 
 
 # TODO: 로직, url 추가 후 작성
