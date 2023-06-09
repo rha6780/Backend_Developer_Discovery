@@ -40,7 +40,7 @@ class UserSignInSerializer(serializers.ModelSerializer, TokenObtainPairSerialize
 class UserEmailConfirmSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fileds = ["email"]
+        fields = ["email"]
 
 
 class UserPasswordResetSerializer(serializers.ModelSerializer):

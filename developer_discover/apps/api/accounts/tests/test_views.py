@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
+from unittest import mock
+
 User = get_user_model()
 
 
@@ -53,4 +55,25 @@ class UserSignInViewTestCase(TestCase):
     def test_invalid_password_data(self):
         invalid_password_data = {"email": "test@test.com", "password": "test9091"}
         response = self.client.post(reverse("sign-in"), invalid_password_data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+
+class UserEmailConfirmView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
+        cls.user = User.objects.create_user(email="test1@admin.com", password="test9090", name="test")
+
+    def test_email_confirm(self):
+        # TODO: invalid_email 해결하기
+        with mock.patch("django.core.mail.send_mail") as mocked_mail:
+            mocked_mail.side_effect = Exception("OH NOES")
+
+        # valid_params_data = {"email": "test1@admin.com"}
+        # response = self.client.post(reverse("email-check"), valid_params_data, format="json")
+        # self.assertEqual(response.status_code, 200)
+
+    def test_invalid_email(self):
+        invalid_params_data = {"email": "testtest.com"}
+        response = self.client.post(reverse("email-check"), invalid_params_data, format="json")
         self.assertEqual(response.status_code, 400)

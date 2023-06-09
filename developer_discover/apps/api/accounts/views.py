@@ -119,7 +119,7 @@ class UserEmailConfirmView(APIView):
     permission_classes = []
     serializer_class = UserEmailConfirmSerializer
 
-    @swagger_auto_schema(tags=["유저 계정 관련 API"], query_serializer=UserSignInSerializer, responses={200: "Success"})
+    @swagger_auto_schema(tags=["유저 계정 관련 API"], query_serializer=UserEmailConfirmSerializer, responses={200: "Success"})
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
