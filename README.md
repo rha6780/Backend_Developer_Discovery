@@ -1,4 +1,7 @@
 # Backend Developer Discovery 개발
+
+[![Coverage Status](./reports/coverage/coverage-badge.svg?dummy=8484744)](.)
+
 - [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
 - Frontend는 SSR로 제공됨으로 해당 프로젝트에 node 서버 및 db 등을 docker-compose를 이용해 구성합니다.
 - Infra는 Infra_Developer_Discovery 레포에서 Terraform으로 관리합니다.
