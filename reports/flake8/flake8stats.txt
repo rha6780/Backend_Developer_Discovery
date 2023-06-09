@@ -1,0 +1,22 @@
+./developer_discover/developer_discover/settings/test.py:4:13: E225 missing whitespace around operator
+./developer_discover/developer_discover/settings/dev.py:5:22: F405 'BASE_DIR' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:7:14: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:11:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:12:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:13:21: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:14:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:15:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:19:13: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:20:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:22:14: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:24:19: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/dev.py:25:23: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:5:22: F405 'BASE_DIR' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:7:14: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:11:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:12:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:13:21: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:14:17: F405 'env' may be undefined, or defined from star imports: .base
+./developer_discover/developer_discover/settings/prod.py:15:17: F405 'env' may be undefined, or defined from star imports: .base
+1     E225 missing whitespace around operator
+19    F405 'BASE_DIR' may be undefined, or defined from star imports: .base
