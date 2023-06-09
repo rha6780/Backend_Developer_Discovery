@@ -30,5 +30,27 @@ class UserSignUpViewTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_invalid_password_data(self):
-        response = self.client.post(reverse("sign-up"), self.invalid_email_data, format="json")
+        response = self.client.post(reverse("sign-up"), self.invalid_password_data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+
+class UserSignInViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
+        cls.user = User.objects.create_user(email="test@test.com", password="test9090", name="test")
+
+    def test_valid_data(self):
+        valid_params_data = {"email": "test@test.com", "password": "test9090"}
+        response = self.client.post(reverse("sign-in"), valid_params_data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_not_exist_user_data(self):
+        email_not_found_data = {"email": "test1@test.com", "password": "test9090"}
+        response = self.client.post(reverse("sign-in"), email_not_found_data, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_invalid_password_data(self):
+        invalid_password_data = {"email": "test@test.com", "password": "test9091"}
+        response = self.client.post(reverse("sign-in"), invalid_password_data, format="json")
         self.assertEqual(response.status_code, 400)

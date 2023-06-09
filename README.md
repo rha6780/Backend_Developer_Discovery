@@ -49,6 +49,6 @@ POSTGRES_PORT=5432
 
 - 로컬에서 환경 구성 이후 developer_discover 폴더에서 coverage run manage.py test 를 통해 현재 커버리지를 알 수 있습니다. 로컬 개발 시 수시로 확인해서 80% 를 목표로 테스트 코드를 작성합시다.
 - [coverage](https://coverage.readthedocs.io/en/latest/index.html) 및 [badge](https://smarie.github.io/python-genbadge/) 관련 문서를 참고하세요.
-
+- TODO: github action으로 coverage 뱃지 업데이트 자동화하기
 
 </details>
