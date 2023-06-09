@@ -1,0 +1,27 @@
+[run]
+omit =
+    *apps.py,
+    *manage.py,
+    */__init__.py,
+    *migrations*,
+    *asgi*,
+    *wsgi*,
+    *admin.py,
+    *urls.py,
+    */settings/*,
+
+[report]
+omit =
+    *apps.py,
+    *manage.py,
+    */__init__.py,
+    *migrations*,
+    *asgi*,
+    *wsgi*,
+    *admin.py,
+    *urls.py,
+    */settings/*,
+
+
+skip_covered = True
+show_missing = True
