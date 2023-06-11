@@ -15,11 +15,11 @@ class VideoListSerializer(serializers.ModelSerializer):
         )
 
 
-class VideoUpdateInputSerializer(serializers.ModelSerializer):
+class VideoCreateSerializer(serializers.ModelSerializer):
     title = serializers.CharField(max_length=512, default="")
-    introduction = serializers.CharField(max_length=1024, default="")
-    youtube_link = serializers.CharField(max_length=2048, default="")
+    introduction = serializers.CharField(max_length=512, default="")
+    youtube_link = serializers.CharField(max_length=1024, default="")
 
     class Meta:
         model = Video
-        fields = "__all__"
+        fields = ("title", "introduction", "youtube_link")
