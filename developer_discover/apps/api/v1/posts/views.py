@@ -21,7 +21,6 @@ class PostListView(ListAPIView):
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
-    # pagination_class = StudentPagination # 👈 pagination_class 값에 매핑
     permission_classes_by_action = {"create": [IsAuthenticated], "list": [AllowAny]}
 
     def create(self, request, *args, **kwargs):
