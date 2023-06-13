@@ -11,11 +11,10 @@ class Post(TimeStampedModel, SoftDeletedModel):
         null=True,
         related_name="posts",
     )
-    title = (
-        models.CharField(
-            "제목",
-            max_length=1024,
-        ),
+    title = models.CharField(
+        "제목",
+        max_length=1024,
+        blank=False,
     )
     content = models.TextField(
         "내용",
