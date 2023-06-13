@@ -11,7 +11,7 @@
 ## Architecture
 
 ### DB ERD
-![Developer Discovery](https://github.com/rha6780/Backend_Developer_Discovery/assets/47859845/54dfd9c9-8850-4043-aa3f-f6690cc627c1)
+![Developer Discovery](https://github.com/rha6780/Backend_Developer_Discovery/assets/47859845/2b6d7e53-414c-4f47-b9c9-71237bff0194)
 
 ### 연계 프로젝트
 - [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
