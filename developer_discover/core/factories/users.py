@@ -9,7 +9,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     """
 
     email = factory.sequence(lambda x: f"test{x}@example.com")
-    password = "test"
+    name = factory.sequence(lambda x: f"test{x}")
+    password = "test_1234_test"
 
     class Meta:
         model = "users.User"
