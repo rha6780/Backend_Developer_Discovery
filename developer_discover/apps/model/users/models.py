@@ -6,6 +6,8 @@ from django.contrib.auth.models import UserManager
 from django.contrib.auth.password_validation import validate_password
 from django.db import models
 
+from ..core.models import SoftDeletedModel
+
 
 class BasicUserManager(UserManager):
     def create_user(self, email, name, password, **extra_field):
@@ -24,10 +26,12 @@ class BasicUserManager(UserManager):
         pass
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, SoftDeletedModel):
     """유저 모델입니다.
     Notes:
         유저 이메일, 패스워드로 구성되고, 유저 식별 외 개인정보를 담지 않습니다.
+    TODO List:
+        * 삭제 시 is_delete 로 관리되고 이후 email, name 등을 특정 값으로 변경하는 것으로 처리 필요.
     """
 
     email = models.EmailField(

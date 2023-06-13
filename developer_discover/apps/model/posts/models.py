@@ -1,10 +1,16 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from ..core.models import TimeStampedModel
+from ..core.models import SoftDeletedModel, TimeStampedModel
 
 
-class Post(TimeStampedModel):
+class Post(TimeStampedModel, SoftDeletedModel):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="posts",
+    )
     title = (
         models.CharField(
             "제목",
@@ -15,11 +21,9 @@ class Post(TimeStampedModel):
         "내용",
         blank=False,
     )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
+    thumbnail = models.ImageField(
+        "썸네일",
         null=True,
-        related_name="posts",
     )
 
     class Meta:
