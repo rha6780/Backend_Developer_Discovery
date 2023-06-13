@@ -79,7 +79,6 @@ APPLICATIONS = [
 
 MODELS = [
     "apps.model.users",
-    "apps.model.videos",
     "apps.model.posts",
 ]
 
