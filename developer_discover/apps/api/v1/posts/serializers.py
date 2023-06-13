@@ -4,7 +4,7 @@ from ....model.posts.models import Post
 
 
 class PostListSerializer(serializers.ModelSerializer):
-    user_name = serializers.RelatedField(source="user", read_only=True)
+    user_name = serializers.RelatedField(source="users.User.name", read_only=True)
 
     class Meta:
         model = Post
