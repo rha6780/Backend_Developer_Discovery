@@ -14,7 +14,7 @@ class PostListViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = APIClient()
-        cls.url = reverse("list")
+        cls.url = reverse("posts-list")
 
     def test_post_data_is_not_exist(self):
         res = self.client.get(self.url)

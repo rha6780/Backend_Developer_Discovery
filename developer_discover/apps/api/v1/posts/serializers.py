@@ -20,3 +20,15 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("id", "title", "content", "thumbnail", "author")
+
+
+class PostCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ("id", "title", "content", "thumbnail", "user")
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = "__all__"
