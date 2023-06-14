@@ -2,12 +2,9 @@ import requests
 
 from django.shortcuts import render
 import django.views as view
-
-
-from django.views.generic import TemplateView
+from django_nextjs.render import render_nextjs_page_sync
 
 
 class HomeView(view.View):
     def get(self, request):
-        res = requests.get("https://localhost:3000")
-        return render(res)
+        return render_nextjs_page_sync(request)
