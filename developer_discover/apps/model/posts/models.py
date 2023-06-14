@@ -23,6 +23,7 @@ class Post(TimeStampedModel, SoftDeletedModel):
     thumbnail = models.ImageField(
         "썸네일",
         null=True,
+        blank=True,
     )
 
     class Meta:
