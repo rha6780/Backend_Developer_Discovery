@@ -57,5 +57,6 @@ POSTGRES_PORT=5432
 - `coverage run manage.py test` 를 통해 테스트
 - `coverage xml && coverage html` 로 각각 파일 생성
 - `mv coverage.xml ../reports/coverage` html의 경우 htmlcov 에서 index를 coverage 폴더로 이동
+- 프로젝트 루트에서 `genbadge coverage`로 뱃지 업데이트
 
 </details>
