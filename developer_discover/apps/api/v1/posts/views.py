@@ -17,6 +17,7 @@ class PostListView(generics.ListAPIView):
     model = Post
     queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostListSerializer
+    authentication_classes = []
     permission_classes = []
 
 
