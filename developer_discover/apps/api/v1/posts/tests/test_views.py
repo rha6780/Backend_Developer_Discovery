@@ -13,7 +13,7 @@ from rest_framework.test import APIRequestFactory, APIClient, force_authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-class PostViewSetTestCase(TestCase):
+class PostListViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = APIClient()
@@ -21,13 +21,16 @@ class PostViewSetTestCase(TestCase):
 
     def test_list_api_post_data_is_not_exist(self):
         res = self.client.get(self.url)
+
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["count"], 0)
         self.assertEqual(res.data["results"], [])
 
     def test_list_api_post_data_is_exist(self):
         post = PostFactory()
+
         res = self.client.get(self.url)
+
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["count"], 1)
         for x in res.data["results"]:
@@ -39,9 +42,11 @@ class PostViewSetTestCase(TestCase):
 
     def test_list_api_post_data_with_many_data(self):
         PostFactory.create_batch(size=10)
+
         res = self.client.get(self.url)
         expected_list = Post.objects.all().order_by("-created_at")
         return_list = res.data["results"]
+
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         for x in range(len(return_list)):
             self.assertEqual(return_list[x]["id"], expected_list[x].id)
@@ -52,6 +57,8 @@ class PostViewSetTestCase(TestCase):
             )
             self.assertEqual(return_list[x]["thumbnail"], f"http://testserver{expected_list[x].thumbnail.url}")
 
+
+class PostCreateViewTestCase(TestCase):
     def test_create_api_with_user(self):
         request_factory = APIRequestFactory()
         client = APIClient()
@@ -63,16 +70,35 @@ class PostViewSetTestCase(TestCase):
         before_count = Post.objects.count()
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         res = client.post(url, {"title": "test-title", "content": "test-content"}, format="json")
-
         after_count = Post.objects.count()
         force_authenticate(request, user=user)
+
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_create_api_with_not_login_user(self):
+        client = APIClient()
+        url = reverse("create")
+
+        before_count = Post.objects.count()
+        res = client.post(url, {"title": "test-title", "content": "test-content"}, format="json")
+        after_count = Post.objects.count()
+
+        self.assertEqual(after_count, before_count)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class PostViewTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
 
     def test_detail_api_with_valid_pk(self):
         post = PostFactory()
         url = reverse("post", kwargs={"pk": post.id})
+
         res = self.client.get(url)
+
         self.assertEqual(res.data["id"], post.id)
         self.assertEqual(res.data["title"], post.title)
         self.assertEqual(res.data["content"], post.content)
@@ -91,9 +117,9 @@ class PostViewSetTestCase(TestCase):
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         res = client.delete(url)
-
         force_authenticate(request, user=user)
         post.refresh_from_db()
+
         self.assertEqual(post.is_deleted, True)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
@@ -103,12 +129,11 @@ class PostViewSetTestCase(TestCase):
         url = reverse("post", kwargs={"pk": post.id})
 
         res = client.delete(url)
-
         post.refresh_from_db()
+
         self.assertEqual(post.is_deleted, False)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
-    # TODO : fix
     def test_patch_api_with_author(self):
         request_factory = APIRequestFactory()
         client = APIClient()
@@ -120,7 +145,18 @@ class PostViewSetTestCase(TestCase):
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         res = client.patch(url, {"content": "fixed_content"})
-
         force_authenticate(request, user=user)
         post.refresh_from_db()
+
+        self.assertEqual(post.content, "fixed_content")
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_patch_api_with_none_author(self):
+        post = PostFactory()
+        url = reverse("post", kwargs={"pk": post.id})
+
+        res = self.client.patch(url, {"content": "fixed_content"}, content_type="application/json")
+        post.refresh_from_db()
+
+        self.assertNotEqual(post.content, "fixed_content")
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)

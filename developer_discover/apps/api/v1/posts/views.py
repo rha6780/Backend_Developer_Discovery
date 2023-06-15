@@ -50,8 +50,8 @@ class PostView(APIView):
         return Response(data={"msg": "not_found"}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        self.authentication_classes = JWTAuthentication
-        self.permission_classes = IsAuthenticated
+        self.authentication_classes = [JWTAuthentication]
+        self.permission_classes = [IsAuthenticated]
         pk = self.kwargs["pk"]
         post = Post.objects.get(id=pk)
         if post.user.id == request.user.id:
@@ -60,14 +60,14 @@ class PostView(APIView):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     def patch(self, request, *args, **kwargs):
-        self.authentication_classes = JWTAuthentication
-        self.permission_classes = IsAuthenticated
+        self.authentication_classes = [JWTAuthentication]
+        self.permission_classes = [IsAuthenticated]
         pk = self.kwargs["pk"]
         post = Post.objects.get(id=pk)
-        serializer = PostUpdateSerializer(data=request.data)
+        serializer = PostUpdateSerializer(post, data=request.data, partial=True)
         if post.user.id == request.user.id:
             if serializer.is_valid():
                 serializer.save()
-                return Response(status.HTTP_200_OK)
-            return Response(status.HTTP_400_BAD_REQUEST)
-        return Response(status.HTTP_403_FORBIDDEN)
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
