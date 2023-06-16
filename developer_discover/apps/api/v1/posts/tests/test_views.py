@@ -120,7 +120,7 @@ class PostViewTestCase(TestCase):
         force_authenticate(request, user=user)
         post.refresh_from_db()
 
-        self.assertEqual(post.is_deleted, True)
+        self.assertEqual(post.deleted_at, True)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_api_with_none_author(self):
@@ -137,7 +137,7 @@ class PostViewTestCase(TestCase):
         force_authenticate(request, user=user)
         post.refresh_from_db()
 
-        self.assertEqual(post.is_deleted, False)
+        self.assertEqual(post.deleted_at, False)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_delete_api_with_not_login_user(self):
@@ -148,7 +148,7 @@ class PostViewTestCase(TestCase):
         res = client.delete(url)
         post.refresh_from_db()
 
-        self.assertEqual(post.is_deleted, False)
+        self.assertEqual(post.deleted_at, False)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_patch_api_with_author(self):
