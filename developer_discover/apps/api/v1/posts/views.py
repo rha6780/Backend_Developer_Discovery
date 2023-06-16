@@ -55,7 +55,7 @@ class PostView(APIView):
         pk = self.kwargs["pk"]
         post = Post.objects.get(id=pk)
         if post.user.id == request.user.id:
-            post.soft_delete()
+            post.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
 
