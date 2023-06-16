@@ -4,7 +4,6 @@ import json
 from django.test import TestCase
 from rest_framework import status
 from django.urls import reverse
-from ......developer_discover.settings.base import BASE_DIR
 from core.factories.users import UserFactory
 
 from core.factories.posts import PostFactory
@@ -47,7 +46,6 @@ class PostListViewTestCase(TestCase):
         res = self.client.get(self.url)
         expected_list = Post.objects.all().order_by("-created_at")
         return_list = res.data["results"]
-        print(BASE_DIR)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         for x in range(len(return_list)):
             self.assertEqual(return_list[x]["id"], expected_list[x].id)
