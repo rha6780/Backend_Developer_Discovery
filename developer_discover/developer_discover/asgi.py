@@ -1,5 +1,5 @@
 """
-ASGI config for studysite project.
+ASGI config for developer_discover project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'studysite.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "developer_discover.developer_discover.settings")
 
 application = get_asgi_application()
