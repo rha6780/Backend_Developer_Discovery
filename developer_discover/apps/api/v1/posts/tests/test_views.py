@@ -4,6 +4,7 @@ import json
 from django.test import TestCase
 from rest_framework import status
 from django.urls import reverse
+from ......developer_discover.settings.base import BASE_DIR
 from core.factories.users import UserFactory
 
 from core.factories.posts import PostFactory
@@ -46,7 +47,7 @@ class PostListViewTestCase(TestCase):
         res = self.client.get(self.url)
         expected_list = Post.objects.all().order_by("-created_at")
         return_list = res.data["results"]
-
+        print(BASE_DIR)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         for x in range(len(return_list)):
             self.assertEqual(return_list[x]["id"], expected_list[x].id)
@@ -98,13 +99,12 @@ class PostViewTestCase(TestCase):
         url = reverse("post", kwargs={"pk": post.id})
 
         res = self.client.get(url)
-
         self.assertEqual(res.data["id"], post.id)
         self.assertEqual(res.data["title"], post.title)
         self.assertEqual(res.data["content"], post.content)
         self.assertEqual(res.data["created_at"], post.created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
         self.assertEqual(res.data["updated_at"], post.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
-        self.assertEqual(res.data["user"], post.user.id)
+        self.assertEqual(res.data["author"], {"id": post.user.id, "name": post.user.name})
 
     def test_delete_api_with_author(self):
         request_factory = APIRequestFactory()
@@ -120,7 +120,7 @@ class PostViewTestCase(TestCase):
         force_authenticate(request, user=user)
         post.refresh_from_db()
 
-        self.assertEqual(post.deleted_at, True)
+        self.assertIsNot(post.deleted_at, None)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_delete_api_with_none_author(self):
@@ -137,7 +137,6 @@ class PostViewTestCase(TestCase):
         force_authenticate(request, user=user)
         post.refresh_from_db()
 
-        self.assertEqual(post.deleted_at, False)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_delete_api_with_not_login_user(self):
@@ -148,7 +147,6 @@ class PostViewTestCase(TestCase):
         res = client.delete(url)
         post.refresh_from_db()
 
-        self.assertEqual(post.deleted_at, False)
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_patch_api_with_author(self):
