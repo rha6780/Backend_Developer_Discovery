@@ -56,22 +56,17 @@ DJANGO_APPS = [
 THIRD_PARTY = [
     "rest_framework",
     "corsheaders",
-    ## social_login
-    # dj_rest_auth
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "rest_framework.authtoken",
-    # django-allauth
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.github",
-    # jwt
     "rest_framework_simplejwt",
-    # swagger
     "drf_yasg",
-    # nextjs
     "django_nextjs",
+    "softdelete",
 ]
 
 APPLICATIONS = [

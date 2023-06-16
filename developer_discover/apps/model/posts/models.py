@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
-from ..core.models import SoftDeletedModel, TimeStampedModel
+from softdelete.models import SoftDeleteObject
+from ..core.models import TimeStampedModel
 
 
-class Post(TimeStampedModel, SoftDeletedModel):
+class Post(TimeStampedModel, SoftDeleteObject):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

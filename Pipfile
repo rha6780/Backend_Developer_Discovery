@@ -16,6 +16,7 @@ django-allauth = "*"
 dj-rest-auth = "*"
 drf-yasg = "==1.20.0"
 django-nextjs = "==2.3.0"
+django-softdelete = "*"
 
 [dev-packages]
 black = "==22.1.0"

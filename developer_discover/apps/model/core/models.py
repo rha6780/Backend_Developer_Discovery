@@ -14,10 +14,18 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class SoftDeleteManager(models.Manager):
+    use_for_related_fields = True
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted__isTrue=True)
+
+
 class SoftDeletedModel(models.Model):
     """
     Notes:
         Soft-Delete 와 관련된 모델로 실제로 삭제하는 것이 아니라 is_delete를 통해서 구분합니다.
+        * 현재 DateTimefield로 할지 고민 중입니다.
     """
 
     is_deleted = models.BooleanField(default=False)

@@ -29,9 +29,11 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author = UserRelatedField(source="user", read_only=True)
+
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = ("id", "title", "content", "thumbnail", "created_at", "author")
 
 
 class PostUpdateSerializer(serializers.ModelSerializer):
