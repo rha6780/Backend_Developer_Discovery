@@ -13,6 +13,9 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
       - name: Configure AWS credential
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -37,6 +40,6 @@ jobs:
         id: deploy_lambda
         run: |
           aws lambda update-function-code \
-          --function-name "$LAMBDA_FUNCTION_NAME" \
-          --image-uri "${{ secrets.AWS_ACCOUNT_ID }}".dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          --function-name $LAMBDA_FUNCTION_NAME \
+          --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
