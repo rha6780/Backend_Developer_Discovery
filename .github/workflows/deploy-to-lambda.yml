@@ -1,0 +1,42 @@
+name: deployment
+
+on: workflow_dispatch
+
+env:
+  USER: github-action
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: developer_discovery_repository
+  IMAGE_TAG: latest
+  LAMBDA_FUNCTION_NAME: developer_discovery
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credential
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Deploy to Lambda
+        id: deploy_lambda
+        run: |
+          aws lambda update-function-code \
+          --function-name "$LAMBDA_FUNCTION_NAME" \
+          --image-uri "${{ secrets.AWS_ACCOUNT_ID }}".dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+
