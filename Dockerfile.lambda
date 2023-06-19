@@ -27,7 +27,4 @@ COPY . ./
 # port open
 EXPOSE 8000
 
-RUN python3 developer_discover/manage.py makemigrations
-RUN python3 developer_discover/manage.py migrate
-
-ENTRYPOINT ["python3", "developer_discover/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["scripts/migrations.sh"]

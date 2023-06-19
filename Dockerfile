@@ -1,5 +1,4 @@
-FROM ubuntu:18.04 as base
-FROM python:3.10.0-slim
+FROM python:3.10.0-slim AS builder
 
 # set working directory 
 WORKDIR .
