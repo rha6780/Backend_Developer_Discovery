@@ -1,5 +1,6 @@
 #!/bin/bash
 
+python3 developer_discover/manage.py db_connection
 python3 developer_discover/manage.py makemigrations
 python3 developer_discover/manage.py migrate
 
