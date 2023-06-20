@@ -26,5 +26,3 @@ COPY . ./
 
 # port open
 EXPOSE 80
-
-ENTRYPOINT ["scripts/docker_run.sh"]
