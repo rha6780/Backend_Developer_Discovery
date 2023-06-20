@@ -26,6 +26,21 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: 'Create env file'
+        run: |
+          mkdir .envs
+          touch .envs/.prod
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .prod
+          echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .prod
+          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .prod
+          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .prod
+          echo POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} >> .prod
+          echo POSTGRES_PORT=5432 >> .prod
+          echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .prod
+          echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }} >> .prod
+          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .prod
+          cat .prod
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
