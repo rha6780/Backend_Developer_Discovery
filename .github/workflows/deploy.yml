@@ -1,4 +1,4 @@
-name: deployment
+name: EC2 Deploy
 
 on: workflow_dispatch
 

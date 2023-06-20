@@ -12,7 +12,9 @@ files:
   - source: /
     destination: /home/ubuntu/build
 hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
   AfterInstall:
-    - location: scripts/start.sh
+    - location: scripts/after_install.sh
       runas: root
       

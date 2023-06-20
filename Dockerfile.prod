@@ -25,6 +25,6 @@ RUN pip install -r /requirements.txt
 COPY . ./
 
 # port open
-EXPOSE 8000
+EXPOSE 80
 
-ENTRYPOINT ["scripts/migrations.sh"]
+ENTRYPOINT ["scripts/docker_run.sh"]
