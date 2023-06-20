@@ -26,3 +26,6 @@ COPY . ./
 
 # port open
 EXPOSE 80
+
+CMD ["python", "developer_discover/manage.py", "migrate"]
+CMD ["python", "developer_discover/manage.py", "runserver", "0:80"]
