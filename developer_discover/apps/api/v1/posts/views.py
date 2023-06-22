@@ -54,7 +54,7 @@ class PostView(APIView):
         self.permission_classes = [IsAuthenticated]
         pk = self.kwargs["pk"]
         post = Post.objects.get(id=pk)
-        if post.user.id == request.user.id:
+        if post is not None and post.user.id == request.user.id:
             post.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
