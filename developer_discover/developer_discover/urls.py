@@ -18,8 +18,10 @@ from django.urls import include
 from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.http import JsonResponse
 
 from rest_framework import permissions
+from rest_framework.views import Response, APIView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -35,13 +37,22 @@ schema_view = get_schema_view(
 )
 
 
+class PingAPI(APIView):
+    permission_classes = []
+
+    def get(self, *args, **kwargs):
+        return Response({"ping": "pong"})
+
+
+# TODO: swagger warning 나오는 이슈 해결(일단 주석 처리)
+# path(r"swagger(?P<format>\.json|\.yaml)", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("apps.api.accounts.urls")),
     path("api/v1/", include("apps.api.v1.urls")),
-    path("", include("apps.pages.urls")),
+    path("ping", PingAPI.as_view(), name="ping"),
     path("", include("django_nextjs.urls")),
-    path(r"swagger(?P<format>\.json|\.yaml)", schema_view.without_ui(cache_timeout=0), name="schema-json"),
     path(r"swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path(r"redoc", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc-v1"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
