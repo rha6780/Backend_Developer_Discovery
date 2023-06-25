@@ -33,7 +33,6 @@ class PostCreateView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_200_OK)
-        print(serializer.errors)
         return Response(data=serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -64,10 +63,8 @@ class PostView(APIView):
         self.permission_classes = [IsAuthenticated]
         pk = self.kwargs["pk"]
         post = Post.objects.get(id=pk)
-        print(request.user.id)
         serializer = PostUpdateSerializer(post, data=request.data, partial=True)
         if post.user.id == request.user.id:
-            print(post.user.id)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_200_OK)
