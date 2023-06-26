@@ -49,7 +49,6 @@ class PingAPI(APIView):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("apps.api.accounts.urls")),
     path("api/v1/", include("apps.api.v1.urls")),
     path("ping", PingAPI.as_view(), name="ping"),
     path("", include("apps.pages.urls")),

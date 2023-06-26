@@ -72,11 +72,7 @@ THIRD_PARTY = [
 APPLICATIONS = [
     "core",
     "apps.pages",
-    "apps.pages.post",
-    "apps.pages.password",
-    "apps.pages.accounts",
     "apps.api.v1",
-    "apps.api.accounts",
 ]
 
 MODELS = [
