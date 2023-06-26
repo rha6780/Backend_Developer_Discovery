@@ -14,7 +14,7 @@ class AccountUrlsTestCase(TestCase):
         self.assertEquals(resolve(url).func.view_class, UserSignInView)
 
     def test_email_check_url_is_resolved(self):
-        url = reverse("email-check")
+        url = reverse("email-confirm")
         self.assertEquals(resolve(url).func.view_class, UserEmailConfirmView)
 
     def test_reset_password_url_is_resolved(self):

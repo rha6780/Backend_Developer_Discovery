@@ -75,5 +75,5 @@ class UserEmailConfirmView(TestCase):
 
     def test_invalid_email(self):
         invalid_params_data = {"email": "testtest.com"}
-        response = self.client.post(reverse("email-check"), invalid_params_data, format="json")
+        response = self.client.post(reverse("email-confirm"), invalid_params_data, format="json")
         self.assertEqual(response.status_code, 400)
