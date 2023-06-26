@@ -52,7 +52,7 @@ urlpatterns = [
     path("accounts/", include("apps.api.accounts.urls")),
     path("api/v1/", include("apps.api.v1.urls")),
     path("ping", PingAPI.as_view(), name="ping"),
-    # path("", include("apps.pages.urls")),
+    path("", include("apps.pages.urls")),
     path("", include("django_nextjs.urls")),
     path(r"swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path(r"redoc", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc-v1"),
