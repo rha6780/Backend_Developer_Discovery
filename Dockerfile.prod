@@ -1,4 +1,3 @@
-FROM ubuntu:18.04 as builder
 FROM python:3.10.0-slim
 
 # set working directory 
