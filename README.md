@@ -6,18 +6,18 @@
 ## 프로젝트 소개
 개발의 유용한 정보를 모아두는 사이트로 Discovery 에 영감을 받아 작업합니다.
 
+### 연계 프로젝트
+- [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
+- [Infra 프로젝트](https://github.com/rha6780/Infra_Developer_Discovery) 에는 Terraform으로 AWS를 구성합니다.
+- Frontend에서 구성한 페이지는 SSR로 로컬에서는 docker-compose로 확인할 수 있습니다.
+
+
 <br>
 
 ## Architecture
 
 ### DB ERD
 ![Developer Discovery](https://github.com/rha6780/Backend_Developer_Discovery/assets/47859845/2b6d7e53-414c-4f47-b9c9-71237bff0194)
-
-### 연계 프로젝트
-- [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
-- Frontend는 SSR로 제공됨으로 해당 프로젝트에 node 서버 및 db 등을 docker-compose를 이용해 구성합니다.
-- Infra는 Infra_Developer_Discovery 레포에서 Terraform으로 관리합니다.
-- 초반에 구성한 페이지도 있습니다.
 
 <br>
 
