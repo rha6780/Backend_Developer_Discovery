@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from ....model.posts.models import Post
-from ....model.users.models import User
+from apps.model.posts.models import Post
+from apps.model.users.models import User
+from apps.model.comments.models import Comment
 from ..users.serializers import CurrentUserSerializer
 
 
@@ -40,3 +41,9 @@ class PostUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("title", "content", "thumbnail")
+
+
+class CommentListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("id", "content", "user", "created_at", "updated_at")

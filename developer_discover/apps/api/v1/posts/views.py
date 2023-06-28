@@ -7,10 +7,17 @@ from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from ....model.posts.models import Post
+from ....model.comments.models import Comment
 
-
-from .serializers import PostListSerializer, PostCreateSerializer, PostSerializer, PostUpdateSerializer
+from .serializers import (
+    PostListSerializer,
+    PostCreateSerializer,
+    PostSerializer,
+    PostUpdateSerializer,
+    CommentListSerializer,
+)
 
 
 class PostListView(generics.ListAPIView):
@@ -70,3 +77,14 @@ class PostView(APIView):
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+class CommentListView(generics.ListAPIView):
+    model = Comment
+    queryset = Comment.objects.all()
+    serializer_class = CommentListSerializer
+    authentication_classes = []
+    permission_classes = []
+
+    def get_queryset(self):
+        return self.queryset.filter(post_id=self.kwargs["pk"]).order_by("created_at")
