@@ -190,33 +190,3 @@ class PostViewTestCase(TestCase):
 
         self.assertNotEqual(post.title, "")
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
-
-
-class CommentListViewTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.client = APIClient()
-        cls.post = PostFactory()
-        cls.url = reverse("comment-list", kwargs={"pk": cls.post.id})
-
-    def test_post_of_comment_list(self):
-        comments = CommentFactory.create_batch(10, post=self.post)
-
-        res = self.client.get(self.url)
-
-        results = res.data["results"]
-        for i in range(10):
-            self.assertEqual(results[i]["id"], comments[i].id)
-            self.assertEqual(results[i]["user"], comments[i].user_id)
-            self.assertEqual(results[i]["content"], comments[i].content)
-            self.assertEqual(results[i]["created_at"], comments[i].created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
-            self.assertEqual(results[i]["updated_at"], comments[i].updated_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
-
-    def test_comment_not_include_in_post(self):
-        comment = CommentFactory()
-
-        res = self.client.get(self.url)
-
-        result = res.data["results"]
-        self.assertEqual(result, [])
-        self.assertNotEqual(comment.post_id, self.post.id)

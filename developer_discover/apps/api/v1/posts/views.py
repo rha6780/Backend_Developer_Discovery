@@ -16,7 +16,6 @@ from .serializers import (
     PostCreateSerializer,
     PostSerializer,
     PostUpdateSerializer,
-    CommentListSerializer,
 )
 
 
@@ -77,14 +76,3 @@ class PostView(APIView):
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_403_FORBIDDEN)
-
-
-class CommentListView(generics.ListAPIView):
-    model = Comment
-    queryset = Comment.objects.all()
-    serializer_class = CommentListSerializer
-    authentication_classes = []
-    permission_classes = []
-
-    def get_queryset(self):
-        return self.queryset.filter(post_id=self.kwargs["pk"]).order_by("created_at")
