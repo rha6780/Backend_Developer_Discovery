@@ -78,6 +78,7 @@ APPLICATIONS = [
 MODELS = [
     "apps.model.users",
     "apps.model.posts",
+    "apps.model.comments",
 ]
 
 INSTALLED_APPS = THIRD_PARTY + MODELS + APPLICATIONS + DJANGO_APPS
