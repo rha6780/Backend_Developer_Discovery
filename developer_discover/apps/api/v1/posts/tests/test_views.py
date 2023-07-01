@@ -15,7 +15,7 @@ class PostListViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.client = APIClient()
-        cls.url = reverse("list")
+        cls.url = reverse("posts:list")
 
     def test_list_api_post_data_is_not_exist(self):
         res = self.client.get(self.url)
@@ -60,7 +60,7 @@ class PostCreateViewTestCase(TestCase):
         request_factory = APIRequestFactory()
         client = APIClient()
         user = UserFactory()
-        url = reverse("create")
+        url = reverse("posts:create")
         request = request_factory.post(url, {"title": "test-title", "content": "test-content"}, format="json")
         refresh = RefreshToken.for_user(user)
 
@@ -75,7 +75,7 @@ class PostCreateViewTestCase(TestCase):
 
     def test_create_api_with_not_login_user(self):
         client = APIClient()
-        url = reverse("create")
+        url = reverse("posts:create")
 
         before_count = Post.objects.count()
         res = client.post(url, {"title": "test-title", "content": "test-content"}, format="json")
@@ -92,7 +92,7 @@ class PostViewTestCase(TestCase):
 
     def test_detail_api_with_valid_pk(self):
         post = PostFactory()
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
 
         res = self.client.get(url)
 
@@ -108,7 +108,7 @@ class PostViewTestCase(TestCase):
         client = APIClient()
         post = PostFactory()
         user = post.user
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
         request = request_factory.delete(url)
         refresh = RefreshToken.for_user(user)
 
@@ -125,7 +125,7 @@ class PostViewTestCase(TestCase):
         client = APIClient()
         user = UserFactory()
         post = PostFactory()
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
         request = request_factory.delete(url)
         refresh = RefreshToken.for_user(user)
 
@@ -139,7 +139,7 @@ class PostViewTestCase(TestCase):
     def test_delete_api_with_not_login_user(self):
         client = APIClient()
         post = PostFactory()
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
 
         res = client.delete(url)
         post.refresh_from_db()
@@ -151,7 +151,7 @@ class PostViewTestCase(TestCase):
         client = APIClient()
         post = PostFactory()
         user = post.user
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
         request = request_factory.patch(url)
         refresh = RefreshToken.for_user(user)
 
@@ -165,7 +165,7 @@ class PostViewTestCase(TestCase):
 
     def test_patch_api_with_none_author(self):
         post = PostFactory()
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
 
         res = self.client.patch(url, {"content": "fixed_content"}, content_type="application/json")
         post.refresh_from_db()
@@ -179,7 +179,7 @@ class PostViewTestCase(TestCase):
         post = PostFactory()
         user = post.user
         invalid_data = {"title": ""}
-        url = reverse("post", kwargs={"pk": post.id})
+        url = reverse("posts:action", kwargs={"pk": post.id})
         request = request_factory.patch(url)
         refresh = RefreshToken.for_user(user)
 

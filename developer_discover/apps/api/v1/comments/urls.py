@@ -6,8 +6,10 @@ from django.urls import path
 # from rest_framework_jwt.views import refresh_jwt_token
 from . import views
 
+
+app_name = "comments"
 urlpatterns = [
-    path("", views.CommentListView.as_view(), name="comment-list"),
-    path("", views.CommentCreateView.as_view(), name="comment-create"),
-    path("/<int:pk>", views.CommentView.as_view(), name="comment"),
+    path("/list", views.CommentListView.as_view(), name="list"),
+    path("", views.CommentCreateView.as_view(), name="create"),
+    path("/<int:pk>", views.CommentView.as_view(), name="action"),
 ]

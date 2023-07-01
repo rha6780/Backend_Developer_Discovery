@@ -15,7 +15,7 @@ class CommentListViewTestCase(TestCase):
     def setUpTestData(cls):
         cls.client = APIClient()
         cls.post = PostFactory()
-        cls.url = reverse("comment-list", kwargs={"post_id": cls.post.id})
+        cls.url = reverse("posts:comments:list", kwargs={"post_id": cls.post.id})
 
     def test_post_of_comment_list(self):
         comments = CommentFactory.create_batch(10, post=self.post)
@@ -51,7 +51,7 @@ class CommentViewTestCase(TestCase):
         request_factory = APIRequestFactory()
         client = APIClient()
         user = UserFactory()
-        url = reverse("comment-create", kwargs={"post_id": self.post.id})
+        url = reverse("posts:comments:create", kwargs={"post_id": self.post.id})
         request = request_factory.post(url, {"content": "test-content"}, format="json")
         refresh = RefreshToken.for_user(user)
 
@@ -68,7 +68,7 @@ class CommentViewTestCase(TestCase):
         request_factory = APIRequestFactory()
         client = APIClient()
         user = UserFactory()
-        url = reverse("comment-create", kwargs={"post_id": self.post.id})
+        url = reverse("posts:comments:create", kwargs={"post_id": self.post.id})
         request = request_factory.post(url, {"content": ""}, format="json")
         refresh = RefreshToken.for_user(user)
 
@@ -86,7 +86,7 @@ class CommentViewTestCase(TestCase):
         client = APIClient()
         user = UserFactory()
         comment = CommentFactory(content="test-1234", user=user)
-        url = reverse("comment", kwargs={"post_id": self.post.id, "pk": comment.id})
+        url = reverse("posts:comments:action", kwargs={"post_id": self.post.id, "pk": comment.id})
         request = request_factory.patch(url, {"content": "test 1234"}, format="json")
         refresh = RefreshToken.for_user(user)
 
@@ -103,7 +103,7 @@ class CommentViewTestCase(TestCase):
         client = APIClient()
         user = UserFactory()
         comment = CommentFactory(content="", user=user)
-        url = reverse("comment", kwargs={"post_id": self.post.id, "pk": comment.id})
+        url = reverse("posts:comments:action", kwargs={"post_id": self.post.id, "pk": comment.id})
         request = request_factory.patch(url, {"content": "test 1234"}, format="json")
         refresh = RefreshToken.for_user(user)
 
@@ -119,7 +119,7 @@ class CommentViewTestCase(TestCase):
         client = APIClient()
         user = UserFactory()
         comment = CommentFactory(user=user)
-        url = reverse("comment", kwargs={"post_id": self.post.id, "pk": comment.id})
+        url = reverse("posts:comments:action", kwargs={"post_id": self.post.id, "pk": comment.id})
         request = request_factory.delete(url, format="json")
         refresh = RefreshToken.for_user(user)
 
