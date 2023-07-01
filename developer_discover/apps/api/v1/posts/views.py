@@ -1,4 +1,11 @@
 from drf_yasg.utils import swagger_auto_schema
+
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, OpenApiParameter, extend_schema_view
+from drf_spectacular.utils import extend_schema
+
+from rest_framework.decorators import action
+from rest_framework.request import Request
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet

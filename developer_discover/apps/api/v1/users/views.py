@@ -8,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.views import APIView
 
+from drf_yasg.utils import swagger_auto_schema
+
 # from .serializers import CurrentUserSerializer
 
 
@@ -15,6 +17,7 @@ class CurrentUserView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 401: "인증되지 않은 사용자"})
     def get(self, request):
         user = request.user
         if request.user is not None:
@@ -27,6 +30,9 @@ class ChangeEmailView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 400: "유효하지 않은 이메일", 401: "인증되지 않은 사용자"}
+    )
     def patch(self, request):
         user = request.user
         email = request.data["changed_email"]
@@ -45,6 +51,9 @@ class ChangePasswordView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 400: "유효하지 않은 비밀번호", 401: "인증되지 않은 사용자"}
+    )
     def patch(self, request):
         params = request.data
         user = request.user

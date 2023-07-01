@@ -64,7 +64,8 @@ THIRD_PARTY = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.github",
     "rest_framework_simplejwt",
-    "drf_yasg",
+    # "drf_yasg",
+    "drf_spectacular",
     "django_nextjs",
     "softdelete",
 ]
@@ -191,6 +192,7 @@ NEXTJS_SETTINGS = {
 APPEND_SLASH = False
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # pagination
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
@@ -224,6 +226,23 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 GITHUB_ID = ""
 GITHUB_SECRET = ""
+
+# drf-spectacular
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Developer Discovery API',
+    'DESCRIPTION': '개발자 Discovery 커뮤니티',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': r'/api/v[0-9]',
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'TAGS': ['accounts', 'users', 'post & comments', 'comments'],
+    'LICENSE': {
+        'name': 'License',
+        'url': 'https://github.com/rha6780/Backend_Developer_Discovery',
+    },
+    # OTHER SETTINGS
+}
+
 
 # jwt settings
 SIMPLE_JWT = {

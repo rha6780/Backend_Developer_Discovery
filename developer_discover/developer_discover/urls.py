@@ -22,19 +22,28 @@ from django.http import JsonResponse
 
 from rest_framework import permissions
 from rest_framework.views import Response, APIView
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="development discovery",
-        default_version="",
-        description="API Docs",
-        terms_of_service="https://www.google.com/policies/terms/",
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
+# from drf_yasg.views import get_schema_view
+# from drf_yasg import openapi
+
+from drf_spectacular.views import (
+    SpectacularJSONAPIView,
+    SpectacularYAMLAPIView,
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
 )
+
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="development discovery",
+#         default_version="",
+#         description="API Docs",
+#         terms_of_service="https://www.google.com/policies/terms/",
+#     ),
+#     public=True,
+#     permission_classes=[permissions.AllowAny],
+# )
 
 
 class PingAPI(APIView):
@@ -44,15 +53,25 @@ class PingAPI(APIView):
         return Response({"ping": "pong"})
 
 
-# TODO: swagger warning 나오는 이슈 해결(일단 주석 처리)
-# path(r"swagger(?P<format>\.json|\.yaml)", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+spectacular = [
+    path("docs/json", SpectacularJSONAPIView.as_view(), name="schema-json"),
+    path("docs/yaml", SpectacularYAMLAPIView.as_view(), name="schema"),
+    # path('schema/user', SpectacularAPIView.as_view(), name='user_schema'),
+    path("docs/swagger", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("docs/redoc", SpectacularRedocView.as_view(url_name="schema")),
+]
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("api/v1/", include("apps.api.v1.urls")),
-    path("ping", PingAPI.as_view(), name="ping"),
-    path("", include("apps.pages.urls")),
-    path("", include("django_nextjs.urls")),
-    path(r"swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
-    path(r"redoc", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc-v1"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("api/v1/", include("apps.api.v1.urls")),
+        path("ping", PingAPI.as_view(), name="ping"),
+        path("", include("apps.pages.urls")),
+        path("", include("django_nextjs.urls")),
+        # path(r"swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+        # path(r"redoc", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc-v1"),
+    ]
+    + spectacular
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
