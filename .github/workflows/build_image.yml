@@ -39,6 +39,7 @@ jobs:
           echo EMAIL_HOST=${{ secrets.EMAIL_HOST }} >> .envs/.prod
           echo EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }} >> .envs/.prod
           echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .envs/.prod
+          echo CORS_ORIGIN_URL=${{ secrets.CORS_ORIGIN_URL }} >> .envs/.prod
           cat .envs/.prod
 
       - name: Build, tag, and push image to Amazon ECR
