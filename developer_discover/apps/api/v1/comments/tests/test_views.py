@@ -26,8 +26,8 @@ class CommentListViewTestCase(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         for i in range(10):
             self.assertEqual(results[i]["id"], comments[i].id)
-            self.assertEqual(results[i]["user"], comments[i].user_id)
             self.assertEqual(results[i]["content"], comments[i].content)
+            self.assertEqual(results[i]["author"], {"id": comments[i].user_id, "name": comments[i].user.name})
             self.assertEqual(results[i]["created_at"], comments[i].created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
             self.assertEqual(results[i]["updated_at"], comments[i].updated_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
 
