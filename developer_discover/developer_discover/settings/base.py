@@ -181,13 +181,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "https://frontend-developer-discovery.vercel.app"]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
 
 # Next JS
 NEXTJS_SETTINGS = {
-        "nextjs_server_url": "https://frontend-developer-discovery.vercel.app",
         # TODO: docker ssl 허용 
-        # "nextjs_server_url": "http://127.0.0.1:3000",
+        "nextjs_server_url": "http://localhost:3000",
 }
 APPEND_SLASH = False
 
