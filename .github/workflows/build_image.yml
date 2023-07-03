@@ -1,6 +1,6 @@
 name: Image Build
 
-on: workflow_dispatch
+on: [workflow_call, workflow_dispatch]
 
 env:
   USER: github-action
