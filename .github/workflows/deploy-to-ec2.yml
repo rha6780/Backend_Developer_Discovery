@@ -1,14 +1,6 @@
-name: Deploy to EC2
+name: Deploy To EC2
 
-on: 
-  workflow_dispatch:
-    secrets:
-      aws-region:
-        required: true
-      aws-access-key-id:
-        required: true
-      aws-secret-access-key:
-        required: true
+on: workflow_dispatch
 
 env:
   USER: github-action
@@ -17,24 +9,12 @@ env:
 concurrency: ${{ github.workflow }}
 
 jobs:
-  setting:
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-  build-image:
-    needs: setting
-    uses: ./.github/workflows/build_image.yml
-    secrets:
-      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
   deployment:
     runs-on: ubuntu-latest
-    needs: build-image
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
       - name: Configure AWS credential
         uses: aws-actions/configure-aws-credentials@v1
         with:
