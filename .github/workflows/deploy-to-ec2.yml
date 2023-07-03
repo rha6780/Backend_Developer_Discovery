@@ -6,6 +6,9 @@ env:
   USER: github-action
   AWS_REGION: ap-northeast-2
 
+concurrency: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   build-image:
     uses: ./.github/workflows/build_image.yml
@@ -13,6 +16,7 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: production
+    needs: build-image
     steps:
       # - name: Configure AWS credential
       #   uses: aws-actions/configure-aws-credentials@v1
