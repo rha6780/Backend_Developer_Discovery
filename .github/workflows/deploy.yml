@@ -9,6 +9,7 @@ env:
 jobs:
   deployment:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Configure AWS credential
         uses: aws-actions/configure-aws-credentials@v1
