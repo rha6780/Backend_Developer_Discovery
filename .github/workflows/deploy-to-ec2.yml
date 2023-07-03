@@ -1,6 +1,14 @@
 name: Deploy to EC2
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    secrets:
+      aws-region:
+        required: true
+      aws-access-key-id:
+        required: true
+      aws-secret-access-key:
+        required: true
 
 env:
   USER: github-action
