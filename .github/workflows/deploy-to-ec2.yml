@@ -7,7 +7,6 @@ env:
   AWS_REGION: ap-northeast-2
 
 concurrency: ${{ github.workflow }}
-  cancel-in-progress: true
 
 jobs:
   build-image:
