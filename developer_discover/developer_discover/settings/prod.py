@@ -28,6 +28,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+CORS_ORIGIN_WHITELIST = [env("CORS_ORIGIN_URL")]
+
 NEXTJS_SETTINGS = {
     "nextjs_server_url": env("CORS_ORIGIN_URL"),
 }
