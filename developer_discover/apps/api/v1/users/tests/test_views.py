@@ -32,7 +32,9 @@ class CurrentUserViewTestCase(TestCase):
         force_authenticate(request, user=self.user)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, {"id": self.user.id, "email": "test@test.com", "name": "test"})
+        self.assertEqual(
+            response.data, {"id": self.user.id, "email": "test@test.com", "name": "test", "image": "/user_icon.png"}
+        )
 
 
 # https://stackoverflow.com/questions/47576635/django-rest-framework-jwt-unit-test
