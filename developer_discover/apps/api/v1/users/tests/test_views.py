@@ -11,24 +11,27 @@ from rest_framework_simplejwt.tokens import RefreshToken
 User = get_user_model()
 
 
-class CurrentUserViewTestCase(TestCase):
+# https://stackoverflow.com/questions/47576635/django-rest-framework-jwt-unit-test
+class UserViewTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.client = APIClient()
+        cls.request_factory = APIRequestFactory()
         cls.user = User.objects.create_user(email="test@test.com", password="test9090", name="test")
+        cls.valid_changed_data = {"changed_email": "test1@test.com", "changed_name": "test"}
+        cls.invalid_changed_data = {"changed_email": "", "changed_name": ""}
 
     def test_user_is_not_exist(self):
-        res = self.client.get(reverse("current"), format="json")
+        res = self.client.get(reverse("user"), format="json")
         self.assertEqual(res.status_code, 401)
 
     def test_user_is_exist(self):
         client = APIClient()
         request_factory = APIRequestFactory()
         refresh = RefreshToken.for_user(self.user)
-        request = request_factory.get(reverse("email"))
+        request = request_factory.get(reverse("user"))
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
-        response = client.get(reverse("current"), format="json")
+        response = client.get(reverse("user"), format="json")
         force_authenticate(request, user=self.user)
 
         self.assertEqual(response.status_code, 200)
@@ -36,36 +39,26 @@ class CurrentUserViewTestCase(TestCase):
             response.data, {"id": self.user.id, "email": "test@test.com", "name": "test", "image": "/user_icon.png"}
         )
 
-
-# https://stackoverflow.com/questions/47576635/django-rest-framework-jwt-unit-test
-class ChangeEmailViewTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.request_factory = APIRequestFactory()
-        cls.user = User.objects.create_user(email="test@test.com", password="test9090", name="test")
-        cls.valid_email_data = {"changed_email": "test1@test.com"}
-        cls.invalid_email_data = {"changed_email": ""}
-
-    def test_valid_email_data(self):
+    def test_valid_changed_data(self):
         client = APIClient()
-        request = self.request_factory.post(reverse("email"))
+        request = self.request_factory.post(reverse("user"))
         refresh = RefreshToken.for_user(self.user)
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
-        response = client.patch(reverse("email"), self.valid_email_data, format="json")
+        response = client.patch(reverse("user"), self.valid_changed_data, format="json")
         force_authenticate(request, user=self.user)
         self.user.refresh_from_db()
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.user.email, "test1@test.com")
 
-    def test_invalid_email_data(self):
+    def test_invalid_changed_data(self):
         client = APIClient()
-        request = self.request_factory.post(reverse("email"))
+        request = self.request_factory.post(reverse("user"))
         refresh = RefreshToken.for_user(self.user)
 
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
-        response = client.patch(reverse("email"), self.invalid_email_data, format="json")
+        response = client.patch(reverse("user"), self.invalid_changed_data, format="json")
         force_authenticate(request, user=self.user)
         self.user.refresh_from_db()
 

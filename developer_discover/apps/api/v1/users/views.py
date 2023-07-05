@@ -1,3 +1,6 @@
+import uuid
+import os
+
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
@@ -14,11 +17,10 @@ from django.conf import settings
 from .serializers import UserImageSerializer
 
 
-class CurrentUserView(APIView):
+class UserView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 401: "인증되지 않은 사용자"})
     def get(self, request):
         user = request.user
         if request.user is not None:
@@ -29,24 +31,20 @@ class CurrentUserView(APIView):
         else:
             return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
 
-
-class ChangeEmailView(APIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    @swagger_auto_schema(
-        tags=["유저 계정 관련 API"], manual_parameters=[], responses={200: "Success", 400: "유효하지 않은 이메일", 401: "인증되지 않은 사용자"}
-    )
     def patch(self, request):
         user = request.user
         email = request.data["changed_email"]
+        name = request.data["changed_name"]
         if request.user is not None:
-            if email not in [None, "", " "]:
-                user.email = email
+            if name in [None, "", " "] and email in [None, "", " "]:
+                return Response({"error_msg": "invalid email"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                if email not in [None, "", " "]:
+                    user.email = email
+                if name not in [None, "", " "]:
+                    user.name = name
                 user.save()
                 return Response({"id": user.id, "email": user.email, "name": user.name}, status.HTTP_200_OK)
-            else:
-                return Response({"error_msg": "invalid email"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -71,21 +69,3 @@ class ChangePasswordView(APIView):
                 return Response({"error_msg": "비밀번호가 올바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error_msg": "유저정보가 올바르지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-class UserImageView(APIView):
-    def post(self, request):
-        name = request.data["image"].name
-        format = ""
-        for c in reversed(name):
-            format += c
-            if c == ".":
-                break
-        format = format[::-1]
-        request.FILES["image"].name = request.data["name"] + format
-
-        serializer = UserImageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
