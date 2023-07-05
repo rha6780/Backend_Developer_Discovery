@@ -69,3 +69,33 @@ class ChangePasswordView(APIView):
                 return Response({"error_msg": "비밀번호가 올바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error_msg": "유저정보가 올바르지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserImageView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        user = request.user
+        if user is not None:
+            print(request.FILES)
+            if request.FILES.get("image", None) is not None:
+                image = request.FILES["image"]
+                image_extension = os.path.splitext(image.name)[1]
+                image_name = str(uuid.uuid4()) + image_extension
+
+                save_path = settings.MEDIA_ROOT
+                if not os.path.exists(save_path):
+                    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+                img_save_path = "%s/%s" % (save_path, image_name)
+                print(img_save_path, image_name)
+                with open(img_save_path, "wb+") as f:
+                    for chunk in image.chunks():
+                        f.write(chunk)
+
+                user.profile_image = image_name
+                user.save()
+
+            return Response({"image": user.profile_image.url}, status=status.HTTP_200_OK)
+        return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
