@@ -14,4 +14,4 @@ docker pull 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discover
 # Docker 컨테이너 실행
 docker run -d -it --name developer_discovery -p 80:80 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
 
-docker run exec $(docker ps -a) /bin/bash -c 'python developper_discover/manage.py migrate'
+docker exec $(docker ps -q -l) /bin/bash -c 'python developper_discover/manage.py migrate'
