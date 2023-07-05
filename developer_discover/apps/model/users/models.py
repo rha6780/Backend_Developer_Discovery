@@ -59,6 +59,7 @@ class User(AbstractBaseUser, PermissionsMixin, SoftDeleteObject):
         "스태프 권한",
         default=False,
     )
+    profile_image = models.ImageField(upload_to="media/", default="user_icon.png")
     activate = models.BooleanField("활성화 여부", default=True)
 
     objects = BasicUserManager()

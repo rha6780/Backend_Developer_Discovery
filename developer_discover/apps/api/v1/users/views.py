@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 
 from drf_yasg.utils import swagger_auto_schema
 
-# from .serializers import CurrentUserSerializer
+from django.conf import settings
+from .serializers import UserImageSerializer
 
 
 class CurrentUserView(APIView):
@@ -21,7 +22,10 @@ class CurrentUserView(APIView):
     def get(self, request):
         user = request.user
         if request.user is not None:
-            return Response({"id": user.id, "email": user.email, "name": user.name}, status=status.HTTP_200_OK)
+            return Response(
+                {"id": user.id, "email": user.email, "name": user.name, "image": user.profile_image.url},
+                status=status.HTTP_200_OK,
+            )
         else:
             return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -67,3 +71,21 @@ class ChangePasswordView(APIView):
                 return Response({"error_msg": "비밀번호가 올바르지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({"error_msg": "유저정보가 올바르지 않습니다."}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class UserImageView(APIView):
+    def post(self, request):
+        name = request.data["image"].name
+        format = ""
+        for c in reversed(name):
+            format += c
+            if c == ".":
+                break
+        format = format[::-1]
+        request.FILES["image"].name = request.data["name"] + format
+
+        serializer = UserImageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
