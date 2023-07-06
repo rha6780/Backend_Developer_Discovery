@@ -19,6 +19,7 @@ django-nextjs = "==2.3.0"
 django-softdelete = "*"
 gunicorn = "*"
 drf-spectacular = "*"
+boto3 = "*"
 
 [dev-packages]
 black = "==22.1.0"
