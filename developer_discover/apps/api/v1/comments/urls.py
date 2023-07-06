@@ -11,5 +11,6 @@ app_name = "comments"
 urlpatterns = [
     path("/list", views.CommentListView.as_view(), name="list"),
     path("", views.CommentCreateView.as_view(), name="create"),
+    path("/image", views.CommentImageView.as_view(), name="image"),
     path("/<int:pk>", views.CommentView.as_view(), name="action"),
 ]

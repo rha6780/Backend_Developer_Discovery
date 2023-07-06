@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from apps.api.utils.image import ImageSave
 from apps.model.comments.models import Comment
 from apps.model.posts.models import Post
 from .serializers import CommentCreateSerializer, CommentUpdateSerializer, CommentListSerializer
@@ -59,3 +60,16 @@ class CommentView(APIView):
             comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+class CommentImageView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        user = request.user
+        if user is not None:
+            image_name = ImageSave.save(self, request)
+
+            return Response({"image": "/" + image_name}, status=status.HTTP_200_OK)
+        return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)

@@ -1,3 +1,6 @@
+import os
+import uuid
+from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
 
 from drf_spectacular.types import OpenApiTypes
@@ -14,6 +17,8 @@ from rest_framework.response import Response
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from apps.api.utils.image import ImageSave
 
 from ....model.posts.models import Post
 from ....model.comments.models import Comment
@@ -83,3 +88,16 @@ class PostView(APIView):
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+class PostImageView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        user = request.user
+        if user is not None:
+            image_name = ImageSave.save(self, request)
+
+            return Response({"image": "/" + image_name}, status=status.HTTP_200_OK)
+        return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
