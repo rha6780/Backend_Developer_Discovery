@@ -6,10 +6,25 @@
 ## 프로젝트 소개
 개발의 유용한 정보를 모아두는 사이트로 Discovery 에 영감을 받아 작업합니다.
 
+<br>
+
+### 전체 구조
+
+![DeveloperDiscovery](./docs/DeveloperDiscovery.png)
+
+웹페이지는 SSR 방식으로 프론트 부분은 Vercel 서버에 배포하고, 이를 EC2에 올라가 있는 Django에서 렌더링 합니다. 회원 로직과 게시판이 주 기능으로 마크다운 에디터를 사용하고, 글에 추가되는 이미지는 S3에 업로드 합니다. 관련 프론트와 인프라는 아래 연계 프로젝트에서 진행합니다.
+
+<br>
+
 ### 연계 프로젝트
-- [Frontend 프로젝트](https://github.com/rha6780/Frontend_Developer_Discovery) 의 API를 주로 구성합니다.
-- [Infra 프로젝트](https://github.com/rha6780/Infra_Developer_Discovery) 에는 Terraform으로 AWS를 구성합니다.
-- Frontend에서 구성한 페이지는 SSR로 로컬에서는 docker-compose로 확인할 수 있습니다.
+
+- 프론트 
+  - [FrontendDeveloperDiscovery](https://github.com/rha6780/Frontend_Developer_Discovery)
+  - Typescript, Next.js
+
+- 인프라
+  - [InfraDeveloperDiscovery](https://github.com/rha6780/Infra_Developer_Discovery) 
+  - Terraform, AWS
 
 
 <br>
@@ -17,7 +32,7 @@
 ## Architecture
 
 ### DB ERD
-![Developer Discovery](https://github.com/rha6780/Backend_Developer_Discovery/assets/47859845/2b6d7e53-414c-4f47-b9c9-71237bff0194)
+![Developer Discovery](./docs/Developer%20DiscoveryDBERD.png)
 
 <br>
 
