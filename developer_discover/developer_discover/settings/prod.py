@@ -40,4 +40,5 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 
 S3_MEDIA_PATH = "media/prod/"
 
-DEBUG = False
+# Nginx 설정
+DEBUG = True

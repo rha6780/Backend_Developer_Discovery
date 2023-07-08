@@ -37,7 +37,7 @@ django_asgi_app = get_asgi_application()
 http_routes = [re_path(r"", django_asgi_app)]
 websocket_routers = []
 
-if not settings.DEBUG:
+if settings.DEBUG:
     http_routes.insert(0, re_path(r"^(?:_next|__next|next).*", NextJSProxyHttpConsumer.as_asgi()))
     websocket_routers.insert(0, path("_next/webpack-hmr", NextJSProxyWebsocketConsumer.as_asgi()))
 
