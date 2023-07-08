@@ -190,3 +190,7 @@ class PostViewTestCase(TestCase):
 
         self.assertNotEqual(post.title, "")
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+# class PostImageViewTestCase(TestCase):
+# TODO: boto3 세팅
