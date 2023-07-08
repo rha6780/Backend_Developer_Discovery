@@ -37,7 +37,7 @@ class UserViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            {"id": self.user.id, "email": "test@test.com", "name": "test", "image": "/media/user_icon.png"},
+            {"id": self.user.id, "email": "test@test.com", "name": "test", "image": "/user_icon.png"},
         )
 
     def test_valid_changed_data(self):
