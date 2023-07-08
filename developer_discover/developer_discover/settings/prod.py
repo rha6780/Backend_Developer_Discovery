@@ -4,6 +4,9 @@ from .base import *
 
 environ.Env.read_env(BASE_DIR.parent / ".envs" / ".prod")
 
+DEBUG=False
+ALLOWED_HOSTS = [env("CORS_ORIGIN_URL")]
+
 SECRET_KEY = env("SECRET_KEY")
 DATABASES = {
     "default": {
@@ -40,5 +43,3 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 
 S3_MEDIA_PATH = "media/prod/"
 
-# Nginx 설정
-DEBUG = True
