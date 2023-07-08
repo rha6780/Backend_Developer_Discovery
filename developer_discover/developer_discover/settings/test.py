@@ -12,3 +12,9 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+
+# AWS
+AWS_ACCESS_KEY_ID="mock"
+AWS_SECRET_ACCESS_KEY="mock"
+
+S3_MEDIA_PATH = "media/prod/"
