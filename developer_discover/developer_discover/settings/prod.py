@@ -5,7 +5,7 @@ from .base import *
 environ.Env.read_env(BASE_DIR.parent / ".envs" / ".prod")
 
 DEBUG=False
-ALLOWED_HOSTS = [env("CORS_ORIGIN_URL")]
+ALLOWED_HOSTS = ["developerdisocvery", env("CORS_ORIGIN_URL")]
 
 SECRET_KEY = env("SECRET_KEY")
 DATABASES = {
