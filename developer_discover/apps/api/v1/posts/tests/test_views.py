@@ -1,5 +1,9 @@
+from sys import orig_argv
+import boto3
+
 from django.test import TestCase
 from django.urls import reverse
+from botocore.stub import Stubber
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, APIClient, force_authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -192,5 +196,12 @@ class PostViewTestCase(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-# class PostImageViewTestCase(TestCase):
-# TODO: boto3 세팅
+class PostImageViewTestCase(TestCase):
+    def test_image_patch_with_not_login_user(self):
+        client = APIClient()
+        invalid_data = {"image": "image.png"}
+        url = reverse("posts:image")
+
+        res = client.patch(url, invalid_data)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
