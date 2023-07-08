@@ -23,6 +23,8 @@ from django.http import JsonResponse
 from rest_framework import permissions
 from rest_framework.views import Response, APIView
 
+from django.views.generic.base import RedirectView
+
 # from drf_yasg.views import get_schema_view
 # from drf_yasg import openapi
 
@@ -53,6 +55,9 @@ class PingAPI(APIView):
         return Response({"ping": "pong"})
 
 
+favicon_view = RedirectView.as_view(url="/static/assets/favicon.ico", permanent=True)
+
+
 spectacular = [
     path("docs/json", SpectacularJSONAPIView.as_view(), name="schema-json"),
     path("docs/yaml", SpectacularYAMLAPIView.as_view(), name="schema"),
@@ -69,8 +74,7 @@ urlpatterns = (
         path("ping", PingAPI.as_view(), name="ping"),
         path("", include("apps.pages.urls")),
         path("", include("django_nextjs.urls")),
-        # path(r"swagger", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
-        # path(r"redoc", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc-v1"),
+        path(r"^favicon\.ico$", favicon_view),
     ]
     + spectacular
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
