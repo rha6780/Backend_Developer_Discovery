@@ -26,6 +26,7 @@ from rest_framework.views import Response, APIView
 
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.static import serve
 
 
 from drf_spectacular.views import (
