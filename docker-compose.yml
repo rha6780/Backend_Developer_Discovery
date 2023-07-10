@@ -1,6 +1,23 @@
 version: '3.1'
 
 services:
+  nginx:
+    restart: always
+    image: nginx
+    volumes:
+      - ./etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./etc/nginx/certs:/etc/nginx/certs
+      # - ./etc/certbot/conf:/etc/letsencrypt
+      # - ./etc/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
+    depends_on:
+      - api
+  
   db:
     image: postgres:15-alpine
     environment:
@@ -23,7 +40,7 @@ services:
           python developer_discover/manage.py db_connection &&
           python developer_discover/manage.py makemigrations &&
           python developer_discover/manage.py migrate &&
-          python developer_discover/manage.py runserver 0.0.0.0:8000"
+          python developer_discover/manage.py runserver 0.0.0.0:8000 --insecure"
     depends_on:
       - db
 
