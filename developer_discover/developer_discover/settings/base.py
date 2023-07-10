@@ -29,7 +29,7 @@ env = environ.Env()
 SECRET_KEY = ""
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -183,13 +183,22 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+# CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+
+# # Next JS
+# NEXTJS_SETTINGS = {
+#         # TODO: docker ssl 허용 
+#         "nextjs_server_url": "http://localhost:3000",
+# }
+CORS_ORIGIN_WHITELIST = ["https://frontend-developer-discovery.vercel.app"]
 
 # Next JS
 NEXTJS_SETTINGS = {
         # TODO: docker ssl 허용 
-        "nextjs_server_url": "http://localhost:3000",
+        "nextjs_server_url": "https://frontend-developer-discovery.vercel.app",
 }
+
+
 APPEND_SLASH = False
 
 REST_FRAMEWORK = {

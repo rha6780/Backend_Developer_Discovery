@@ -43,3 +43,6 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 
 S3_MEDIA_PATH = "media/prod/"
 
+
+# Debug False Static file serve
+STORAGES = {"default": {"BACKEND": "storages.backends.s3boto3.S3Boto3Storage"}}
