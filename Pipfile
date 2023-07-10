@@ -20,6 +20,7 @@ django-softdelete = "*"
 gunicorn = "*"
 drf-spectacular = "*"
 boto3 = "*"
+uwsgi = "*"
 
 [dev-packages]
 black = "==22.1.0"
