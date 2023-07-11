@@ -1,4 +1,3 @@
-from distutils.command.upload import upload
 import os
 import uuid
 
