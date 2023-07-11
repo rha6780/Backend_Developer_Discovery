@@ -172,7 +172,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = "/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-S3_MEDIA_PATH = "media/"
+S3_MEDIA_PATH = "dev/"
 
 
 # Default primary key field type

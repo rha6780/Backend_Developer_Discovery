@@ -41,7 +41,7 @@ NEXTJS_SETTINGS = {
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 
-S3_MEDIA_PATH = "media/prod/"
+S3_MEDIA_PATH = "prod/"
 
 
 # Debug False Static file serve
