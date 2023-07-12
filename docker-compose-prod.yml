@@ -27,6 +27,7 @@ services:
   web:
     restart: always
     image: 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
+    build: ../Frontend_Developer_Discovery
     ports:
       - "3000:3000"
     volumes:

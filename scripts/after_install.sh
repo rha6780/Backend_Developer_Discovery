@@ -13,8 +13,8 @@ docker rmi $(docker images -q)
 # # ECR 이미지 가져오기
 docker pull 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
 
-# # Docker 컨테이너 실행
-# docker run -d -it --name developer_discovery -p 80:80 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
+# # Web Docker 컨테이너 실행
+docker run -d -it --name developer_discovery-web-1 -p 3000:3000 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
 
 # docker exec -i $(sudo docker ps -q -l) python developer_discover/manage.py migrate
 
@@ -24,4 +24,4 @@ cd /root/projects/Backend_Developer_Discovery
 
 git pull
 
-docker compose -f docker-compose-prod.yml up -d
+docker compose -f docker-compose-prod.yml up -d nginx api
