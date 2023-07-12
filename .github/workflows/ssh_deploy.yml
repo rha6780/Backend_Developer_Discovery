@@ -16,5 +16,7 @@ jobs:
           username: ${{ secrets.USER }}
           port: 22
           script: |
-            cd study_dir/study-run-page
+            cd /projects/Backend_Developer_Discovery
             git pull
+            docker compose -f docker-compose-prod.yml up -d nginx api
+            

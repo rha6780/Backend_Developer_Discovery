@@ -25,8 +25,8 @@ services:
           python developer_discover/manage.py runserver 0.0.0.0:8000"
 
   web:
-    build: ../Frontend_Developer_Discovery
     restart: always
+    image: 164899418867.dkr.ecr.ap-northeast-2.amazonaws.com/developer_discovery_repository:latest
     ports:
       - "3000:3000"
     volumes:
