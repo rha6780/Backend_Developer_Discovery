@@ -11,6 +11,7 @@ permissions:
 files:
   - source: /
     destination: /root/projects/Backend_Developer_Discovery
+    overwrite: true
 file_exists_behavior: OVERWRITE
 hooks:
   BeforeInstall:
