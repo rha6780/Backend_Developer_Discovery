@@ -24,4 +24,4 @@ cd /root/projects/Backend_Developer_Discovery
 
 git pull
 
-docker compose -f docker-compose-prod.yml up -d nginx api
+docker compose -f docker-compose-prod.yml up -d
