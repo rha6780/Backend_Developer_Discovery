@@ -10,7 +10,7 @@ permissions:
       - file
 files:
   - source: /
-    destination: /home/ubuntu/build
+    destination: /root/projects/Backend_Developer_Discovery
 hooks:
   BeforeInstall:
     - location: scripts/before_install.sh
