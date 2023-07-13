@@ -12,30 +12,26 @@
 
 ![DeveloperDiscovery](./docs/DeveloperDiscovery_with_nginx.png)
 
-EC2 내부에 Nginx, Django, Next.js가 도커 컨테이너로 실행됩니다. Nginx를 통해 healthcheck와 라우팅을 설정합니다. SSR 방식이고 각 페이지에 대한 요청은 Django 로 전송됩니다. 여기서 렌더링 중 필요한 js, css는 Next.js에서 응답하게 됩니다. 기능적인 부분과 테스트, 문서화를 더 보충한 이후에 캐싱 및 최적화를 진행할 예정입니다.
+EC2 내부에 Nginx, Django, Next.js가 도커 컨테이너로 실행됩니다. Nginx를 통해 healthcheck 와 라우팅을 설정합니다. Next.js 에서 페이지를 리턴하고 필요한 API 는 Django에서 응답하게 됩니다.
+기능적인 부분과 테스트, 문서화를 더 보충한 이후에 캐싱 및 최적화를 진행할 예정입니다. 관련 프론트와 인프라는 아래 연계 프로젝트에서 진행합니다.
 
 <br>
-
-**구조 개선**
-
-- 이슈 : Django DEBUG=False 옵션에서 static, media, Next.js 페이지와 각종 이미지 제공 안됨.
-  - 해결 : Nginx 도입
-
-- 이슈 : 페이지 렌더링 시간이 오래걸림
-  - 원인 : 기존 Vercel을 이용하게 되면, 각각 다른 네트워크에 있는 서버로 `EC2` <=> `Vercel` 사이에 통신이 많은 점
-  - 해결 : Nginx를 통한 EC2 내부 컨테이너 간의 통신으로 변경 및 캐싱 적용
-
-
-Nginx를 도입함으로 백엔드, 프론트의 배포 과정, 비용을 일관성있게 관리할 수 있다. 다만, 이미지 빌드에서 메모리가 부족해 빌드 도중 멈추는 이슈가 있기 때문에 도커 이미지 최적화가 필요하다.
 
 <br>
 
 <details>
 <summary>기존 배포 구조(deprecated)</summary>
 
-웹페이지는 SSR 방식으로 프론트 부분은 Vercel 서버에 배포하고, 이를 EC2에 올라가 있는 Django에서 렌더링 합니다. 회원 로직과 게시판이 주 기능으로 마크다운 에디터를 사용하고, 글에 추가되는 이미지는 S3에 업로드 합니다. 관련 프론트와 인프라는 아래 연계 프로젝트에서 진행합니다.
+웹페이지는 SSR 방식으로 프론트 부분은 Vercel 서버에 배포하고, 이를 EC2에 올라가 있는 Django에서 렌더링 합니다. 회원 로직과 게시판이 주 기능으로 마크다운 에디터를 사용하고, 글에 추가되는 이미지는 S3에 업로드 합니다.
 
 ![DeveloperDiscoveryDeprecated](./docs/DeveloperDiscovery_deprecated.png)
+
+- 이슈 : 페이지 렌더링 시간이 오래걸림
+  - 원인 : 기존 Vercel을 이용하게 되면, 각각 다른 네트워크에 있는 서버로 `EC2` <=> `Vercel` 사이에 통신이 많은 점
+  - 해결 : Nginx를 통한 EC2 내부 컨테이너 간의 통신으로 변경 및 캐싱 적용
+
+- 이슈 : Django DEBUG=False 옵션에서 static, media, Next.js 페이지와 각종 이미지 제공 안됨.
+  - 해결 : Nginx 도입
 
 </details>
 
