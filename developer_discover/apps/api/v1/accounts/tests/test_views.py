@@ -8,6 +8,7 @@ from unittest.mock import patch, MagicMock
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -91,18 +92,19 @@ class UserResetPasswordView(TestCase):
     def setUpTestData(cls):
         cls.client = APIClient()
         cls.user = User.objects.create_user(email="test1@admin.com", password="test9090", name="test")
+        cls.token, is_created = Token.objects.get_or_create(user=cls.user)
 
     def test_valid_data_reset_password_success(self):
-        valid_params_data = {"token": "token", "password": "test8989"}
+        valid_params_data = {"token": str(self.token), "password": "test-8989"}
         response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
         self.assertEqual(response.status_code, 200)
 
     def test_token_not_provide_reset_password_failed(self):
-        valid_params_data = {"token": "", "password": "test8989"}
-        response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
+        invalid_params_data = {"token": "", "password": "test8989"}
+        response = self.client.post(reverse("reset-password"), invalid_params_data, format="json")
         self.assertEqual(response.status_code, 404)
 
     def test_password_not_provide_reset_password_failed(self):
-        valid_params_data = {"token": "token", "password": ""}
-        response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
-        self.assertEqual(response.status_code, 404)
+        invalid_params_data = {"token": str(self.token), "password": ""}
+        response = self.client.post(reverse("reset-password"), invalid_params_data, format="json")
+        self.assertEqual(response.status_code, 400)

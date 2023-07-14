@@ -153,15 +153,14 @@ class UserPasswordResetView(APIView):
         query_serializer=UserPasswordResetSerializer,
         responses={200: "성공", 400: "파라미터 또는 토큰이 유효하지 않음"},
     )
-    def post(self, request, *args, **kwags):
+    def post(self, request):
         params = request.data
         serializer = self.serializer_class(data=params)
-        token = get_object_or_404(Token, key=params["token"])
+        token = get_object_or_404(Token, key=str(params["token"]))
 
-        if token is None:
-            return Response({"message": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
         if not serializer.is_valid():
             return Response({"message": "Invalid password"}, status.HTTP_400_BAD_REQUEST)
+
         user = User.objects.get(id=token.user_id)
         user.set_password(params["password"])
         user.save()
