@@ -1,9 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from rest_framework.test import APIClient
 
 from unittest import mock
+from unittest.mock import patch, MagicMock
+
+from rest_framework import status
+from rest_framework.test import APIClient
+from rest_framework.response import Response
 
 User = get_user_model()
 
@@ -64,16 +68,41 @@ class UserEmailConfirmView(TestCase):
         cls.client = APIClient()
         cls.user = User.objects.create_user(email="test1@admin.com", password="test9090", name="test")
 
-    def test_email_confirm(self):
-        # TODO: invalid_email 해결하기
-        with mock.patch("django.core.mail.send_mail") as mocked_mail:
-            mocked_mail.side_effect = Exception("OH NOES")
+    @patch("apps.api.v1.accounts.views.requests")
+    def test_email_confirm(self, mocked_request):
+        class FakeResponse:
+            def json(self):
+                return Response({"message": "Email Sending"}, status.HTTP_200_OK)
 
-        # valid_params_data = {"email": "test1@admin.com"}
-        # response = self.client.post(reverse("email-check"), valid_params_data, format="json")
-        # self.assertEqual(response.status_code, 200)
+        mocked_request.get = MagicMock(return_value=FakeResponse())
 
-    def test_invalid_email(self):
+        valid_params_data = {"email": "test1@admin.com"}
+        response = self.client.post(reverse("email-confirm"), valid_params_data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_email_not_found(self):
         invalid_params_data = {"email": "testtest.com"}
         response = self.client.post(reverse("email-confirm"), invalid_params_data, format="json")
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
+
+
+class UserResetPasswordView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
+        cls.user = User.objects.create_user(email="test1@admin.com", password="test9090", name="test")
+
+    def test_valid_data_reset_password_success(self):
+        valid_params_data = {"token": "token", "password": "test8989"}
+        response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
+        self.assertEqual(response.status_code, 200)
+
+    def test_token_not_provide_reset_password_failed(self):
+        valid_params_data = {"token": "", "password": "test8989"}
+        response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
+        self.assertEqual(response.status_code, 404)
+
+    def test_password_not_provide_reset_password_failed(self):
+        valid_params_data = {"token": "token", "password": ""}
+        response = self.client.post(reverse("reset-password"), valid_params_data, format="json")
+        self.assertEqual(response.status_code, 404)

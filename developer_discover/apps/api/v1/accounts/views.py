@@ -3,6 +3,7 @@ import requests
 from django.conf import settings
 from django.http import HttpResponseRedirect
 
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
@@ -121,10 +122,9 @@ class UserEmailConfirmView(APIView):
 
     @swagger_auto_schema(tags=["유저 계정 관련 API"], query_serializer=UserEmailConfirmSerializer, responses={200: "Success"})
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            email = request.data.get("email")
-            user = User.objects.get(email=email)
+        email = request.data.get("email")
+        user = get_object_or_404(User, email=email)
+        if user is not None:
             token, is_created = Token.objects.get_or_create(user=user)
             current_site = get_current_site(request)
             message = render_to_string(
@@ -156,7 +156,7 @@ class UserPasswordResetView(APIView):
     def post(self, request, *args, **kwags):
         params = request.data
         serializer = self.serializer_class(data=params)
-        token = Token.objects.get(key=params["token"])
+        token = get_object_or_404(Token, key=params["token"])
 
         if token is None:
             return Response({"message": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
@@ -169,7 +169,6 @@ class UserPasswordResetView(APIView):
         return Response({"message": "Update compelete"}, status.HTTP_200_OK)
 
 
-# TODO: 회원 탈퇴 관련 로직 추가
 class UserDestroyView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
