@@ -87,6 +87,10 @@ POSTGRES_PORT=5432
 - [coverage](https://coverage.readthedocs.io/en/latest/index.html) 및 [badge](https://smarie.github.io/python-genbadge/) 관련 문서를 참고하세요.
 - TODO: github action으로 coverage 뱃지 업데이트 자동화하기
 
+**스크립트**
+
+- scripts 폴더에서 sh coverage_update.sh
+
 **수동 업데이트**
 - 프로젝트 루트에서 `cd developer discover`
 - 이전에 테스트한 결과가 있는 경우, `coverage erase`

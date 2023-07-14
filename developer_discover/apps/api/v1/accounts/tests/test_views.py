@@ -10,6 +10,11 @@ from rest_framework.test import APIClient
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
+from rest_framework.test import APIRequestFactory, force_authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from core.factories.users import UserFactory
+
 User = get_user_model()
 
 
@@ -108,3 +113,26 @@ class UserResetPasswordView(TestCase):
         invalid_params_data = {"token": str(self.token), "password": ""}
         response = self.client.post(reverse("reset-password"), invalid_params_data, format="json")
         self.assertEqual(response.status_code, 400)
+
+
+class UserDestroyView(TestCase):
+    def test_withdrawal_login_user(self):
+        request_factory = APIRequestFactory()
+        client = APIClient()
+        user = UserFactory()
+        url = reverse("withdrawal")
+        request = request_factory.delete(url, format="json")
+        refresh = RefreshToken.for_user(user)
+
+        client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        res = client.delete(url, format="json")
+        force_authenticate(request, user=user)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_withdrawal_not_login_user(self):
+        client = APIClient()
+
+        res = client.delete(reverse("withdrawal"), format="json")
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
