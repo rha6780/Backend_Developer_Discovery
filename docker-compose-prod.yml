@@ -34,4 +34,4 @@ services:
       - ../Frontend_Developer_Discovery:/Frontend_Developer_Discovery
     environment:
       - CHOKIDAR_USEPOLLING=true
-    # command: next start
+    # command: npm run build && npm run start
