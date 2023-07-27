@@ -101,3 +101,21 @@ class PostImageView(APIView):
 
             return Response({"image": "/" + image_name}, status=status.HTTP_200_OK)
         return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class PostLikeView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        user = request.user
+        post = Post.objects.get(id=pk)
+        if user is not None:
+            if post.like.filter(id=user.id).exists():
+                post.like.remove(user)
+            else:
+                post.like.add(user)
+
+            return Response({"likes": post.like.count()}, status=status.HTTP_200_OK)
+        return Response({"error_msg": "비 로그인 상태입니다."}, status=status.HTTP_401_UNAUTHORIZED)
