@@ -205,3 +205,29 @@ class PostImageViewTestCase(TestCase):
         res = client.patch(url, invalid_data)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class PostLikeViewTestCase(TestCase):
+    def test_like_with_not_login_user(self):
+        client = APIClient()
+        post = PostFactory()
+        url = reverse("posts:like", kwargs={"pk": post.id})
+
+        res = client.post(url)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_like_with_login_user(self):
+        request_factory = APIRequestFactory()
+        client = APIClient()
+        user = UserFactory()
+        post = PostFactory()
+        url = reverse("posts:like", kwargs={"pk": post.id})
+        request = request_factory.post(url)
+        refresh = RefreshToken.for_user(user)
+
+        client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        res = client.post(url)
+        force_authenticate(request, user=user)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
