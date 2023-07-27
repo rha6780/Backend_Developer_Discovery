@@ -26,6 +26,7 @@ class Post(TimeStampedModel, SoftDeleteObject):
         null=True,
         blank=True,
     )
+    like = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="likes")
 
     class Meta:
         db_table = "posts"

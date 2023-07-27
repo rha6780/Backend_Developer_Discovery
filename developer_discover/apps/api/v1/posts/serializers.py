@@ -1,3 +1,4 @@
+from dataclasses import field
 from rest_framework import serializers
 
 from apps.model.posts.models import Post
@@ -31,10 +32,14 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserRelatedField(source="user", read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, obj):
+        return obj.like.count()
 
     class Meta:
         model = Post
-        fields = ("id", "title", "content", "thumbnail", "created_at", "updated_at", "author")
+        fields = ("id", "title", "content", "thumbnail", "created_at", "updated_at", "likes", "author")
 
 
 class PostUpdateSerializer(serializers.ModelSerializer):
